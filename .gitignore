@@ -24,3 +24,7 @@ haystack-*.tar
 
 # Temporary files, for example, from tests.
 /tmp/
+
+# Dialyxir
+/priv/plts/*.plt
+/priv/plts/*.plt.hash
