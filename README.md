@@ -1,5 +1,7 @@
 # Haystack
 
+[![Build Status](https://github.com/elixir-haystack/haystack/actions/workflows/ci.yml/badge.svg)](https://github.com/elixir-haystack/haystack/actions) [![Coverage Status](https://coveralls.io/repos/github/elixir-haystack/haystack/badge.svg?branch=main)](https://coveralls.io/github/elixir-haystack/haystack?branch=main)
+
 **TODO: Add description**
 
 ## Installation
@@ -18,4 +20,3 @@ end
 Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_doc)
 and published on [HexDocs](https://hexdocs.pm). Once published, the docs can
 be found at <https://hexdocs.pm/haystack>.
-

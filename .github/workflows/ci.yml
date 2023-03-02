@@ -1,0 +1,112 @@
+name: ci
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    name: Elixir ${{ matrix.elixir }} / OTP ${{ matrix.otp }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        otp: ['25.0']
+        elixir: ['1.14.0']
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Setup BEAM
+        uses: erlef/setup-beam@v1
+        with:
+          otp-version: ${{ matrix.otp }}
+          elixir-version: ${{ matrix.elixir }}
+
+      - name: Setup Environment
+        run: |
+          mix local.hex --force
+          mix local.rebar --force
+          mix deps.get
+      - name: Run Tests
+        run: mix test --trace
+
+  coverage:
+    name: Coverage Reporting
+    runs-on: ubuntu-latest
+    env:
+      MIX_ENV: test
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Setup BEAM
+        uses: erlef/setup-beam@v1
+        with:
+          elixir-version: '1.14.0'
+          otp-version: '25.0'
+
+      - name: Setup Environment
+        run: |
+          mix local.hex --force
+          mix local.rebar --force
+          mix deps.get
+      - name: Generate Coverage
+        run: mix coveralls.github
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  lint:
+    name: Code Linting
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Setup BEAM
+        uses: erlef/setup-beam@v1
+        with:
+          elixir-version: '1.14.0'
+          otp-version: '25.0'
+
+      - name: Setup Environment
+        run: |
+          mix local.hex --force
+          mix local.rebar --force
+          mix deps.get
+
+      - name: Validate Formatting
+        run: mix format --check-formatted
+
+      - name: Validate Linting
+        run: mix credo --strict --all
+
+  dialyzer:
+    name: Code Linting
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Setup BEAM
+        uses: erlef/setup-beam@v1
+        with:
+          elixir-version: '1.14.0'
+          otp-version: '25.0'
+
+      - name: Setup Environment
+        run: |
+          mix local.hex --force
+          mix local.rebar --force
+          mix deps.get
+
+      - name: Retrieve Dialyzer PLT cache
+        uses: actions/cache@v1
+        id: plt-cache
+        with:
+          path: priv/plts
+          key: ${{ runner.os }}-${{ steps.beam.outputs.otp-version }}-${{ steps.beam.outputs.elixir-version }}-plts-${{ hashFiles('**/mix.lock') }}
+          restore-keys: ${{ runner.os }}-plts-
+
+      - name: Create Dialyzer PLTs
+        if: steps.plt-cache.outputs.cache-hit != 'true'
+        run: |
+          mkdir -p priv/plts
+          mix dialyzer --plt
+
+      - name: Run Dialyzer
+        run: mix dialyzer --no-check
