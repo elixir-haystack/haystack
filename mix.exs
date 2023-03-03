@@ -33,7 +33,7 @@ defmodule Haystack.MixProject do
       {:credo, "~> 1.6", only: [:dev, :test], runtime: false},
       {:dialyxir, "~> 1.2", only: [:dev], runtime: false},
       {:excoveralls, "~> 0.15", only: :test},
-      {:inch_ex, "~> 2.0", only: [:dev, :test]}
+      {:stemmer, "~> 1.1"}
     ]
   end
 

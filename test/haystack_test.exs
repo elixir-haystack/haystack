@@ -1,8 +1,5 @@
 defmodule HaystackTest do
-  use ExUnit.Case
-  doctest Haystack
+  use ExUnit.Case, async: true
 
-  test "greets the world" do
-    assert Haystack.hello() == :world
-  end
+  doctest Haystack
 end
