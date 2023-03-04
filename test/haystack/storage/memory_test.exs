@@ -3,7 +3,7 @@ defmodule Haystack.Storage.MemoryTest do
 
   alias Haystack.Storage
 
-  doctest Haystack.Storage.Memory
+  doctest Storage.Memory
 
   setup do
     %{s: Storage.Memory.new() |> Storage.Memory.insert(:a, "a")}
