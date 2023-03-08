@@ -4,7 +4,7 @@ defmodule Haystack.Fixture do
   """
 
   alias __MODULE__
-  alias Haystack.Index
+  alias Haystack.{Index, Store}
 
   @animals Fixture.Builder.build("/animals/*.json")
 
@@ -12,8 +12,13 @@ defmodule Haystack.Fixture do
   def data(:animals), do: @animals
 
   @doc false
-  def fixture(:animals),
-    do: %{index: index(:animals), data: data(:animals)}
+  def fixture(:animals) do
+    data = data(:animals)
+    index = index(:animals)
+    docs = Enum.map(data, &Store.Document.new(index, &1))
+
+    %{data: data, docs: docs, index: index}
+  end
 
   @doc false
   def index(:animals) do

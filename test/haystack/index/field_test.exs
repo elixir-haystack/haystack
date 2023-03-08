@@ -20,7 +20,7 @@ defmodule Haystack.Index.FieldTest do
   end
 
   describe "term/1" do
-    test "should create new term field" do
+    test "should create term field" do
       field = Index.Field.term("id")
 
       assert field.k == "id"

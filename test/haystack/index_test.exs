@@ -1,7 +1,7 @@
 defmodule Haystack.IndexTest do
   use ExUnit.Case, async: true
 
-  alias Haystack.Index
+  alias Haystack.{Index, Storage}
 
   doctest Haystack.Index
 

@@ -7,45 +7,35 @@ defmodule Haystack.Store do
 
   @doc """
   Insert docs into the store.
-
-  ## Examples
-
-    iex> index = Index.new(:people)
-    iex> Store.insert(index, [%{id: 1, name: "John Doe"}])
-
   """
   @spec insert(Index.t(), list(map)) :: Index.t()
-  def insert(index, _docs) do
-    index
+  def insert(index, docs) do
+    Enum.reduce(docs, index, fn doc, index ->
+      Enum.reduce(index.attrs.insert, index, fn module, index ->
+        module.insert(index, doc)
+      end)
+    end)
   end
 
   @doc """
   Update docs in the store.
-
-  ## Examples
-
-    iex> index = Index.new(:people)
-    iex> index = Store.insert(index, [%{id: 1, name: "John"}])
-    iex> Store.update(index, [%{id: 1, name: "John Doe"}])
-
   """
   @spec update(Index.t(), list(map)) :: Index.t()
-  def update(index, _docs) do
-    index
+  def update(index, docs) do
+    index = delete(index, Enum.map(docs, &Map.get(&1, :ref)))
+
+    insert(index, docs)
   end
 
   @doc """
   Delete docs from the store.
-
-  ## Examples
-
-    iex> index = Index.new(:people)
-    iex> index = Store.insert(index, [%{id: 1, name: "John"}])
-    iex> Store.delete(index, [1])
-
   """
   @spec delete(Index.t(), list(term)) :: Index.t()
-  def delete(index, _refs) do
-    index
+  def delete(index, refs) do
+    Enum.reduce(refs, index, fn ref, index ->
+      Enum.reduce(index.attrs.delete, index, fn module, index ->
+        module.delete(index, ref)
+      end)
+    end)
   end
 end

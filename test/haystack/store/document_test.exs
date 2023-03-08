@@ -34,10 +34,11 @@ defmodule Haystack.Store.DocumentTest do
 
     test "should tokenize and transform fields", %{index: index, data: data} do
       %{fields: %{"name" => tokens}} = Store.Document.new(index, hd(data))
+      tokens = Enum.sort_by(tokens, & &1.v)
 
-      assert ~w{red panda} == Enum.map(tokens, & &1.v)
+      assert ~w{panda red} == Enum.map(tokens, & &1.v)
       assert [0.5, 0.5] == Enum.map(tokens, & &1.tf)
-      assert [[{0, 3}], [{4, 5}]] == Enum.map(tokens, & &1.positions)
+      assert [[{4, 5}], [{0, 3}]] == Enum.map(tokens, & &1.positions)
     end
   end
 end

@@ -43,7 +43,7 @@ defmodule Haystack.Store.Document do
   defp normalize({k, v}),
     do: {to_string(k), v}
 
-  # Extract the fields from the map
+  #  Extract the fields from the map
   defp extract(map, fields) do
     fields
     |> Enum.map(fn field -> {get_in(map, field.path), field} end)
@@ -65,14 +65,15 @@ defmodule Haystack.Store.Document do
       counts = Enum.frequencies_by(tokens, & &1.v)
       groups = Enum.group_by(tokens, & &1.v)
 
-      values = Enum.map(groups, fn {v, group} ->
-        %{}
-        |> Map.put(:v, v)
-        |> Map.put(:positions, Enum.map(group, &{&1.start, &1.length}))
-        |> Map.put(:tf, Float.round(Map.get(counts, v) / Enum.count(tokens), 2))
-      end)
+      values =
+        Enum.map(groups, fn {v, group} ->
+          %{}
+          |> Map.put(:v, v)
+          |> Map.put(:positions, Enum.map(group, &{&1.start, &1.length}))
+          |> Map.put(:tf, Float.round(Map.get(counts, v) / Enum.count(tokens), 2))
+        end)
 
-      {k, Enum.reverse(values)}
+      {k, values}
     end)
   end
 end

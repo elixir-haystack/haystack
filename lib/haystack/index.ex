@@ -4,16 +4,18 @@ defmodule Haystack.Index do
   """
 
   alias __MODULE__
-  alias Haystack.Storage
+  alias Haystack.{Storage, Store}
 
-  @enforce_keys ~w{name ref fields}a
+  @enforce_keys ~w{attrs fields name ref storage}a
 
   defstruct @enforce_keys
 
   @type t :: %__MODULE__{
+          attrs: %{insert: list(module), delete: list(module)},
+          fields: %{Index.Field.k() => Index.Field.t()},
           name: atom,
           ref: Index.Field.t(),
-          fields: %{Index.Field.k() => Index.Field.t()}
+          storage: struct()
         }
 
   @type opts :: Keyword.t()
@@ -28,9 +30,14 @@ defmodule Haystack.Index do
   """
   @spec new(atom, opts) :: t
   def new(name, opts \\ []) do
-    storage = Keyword.get(opts, :storage, Storage.Memory.new([]))
+    opts =
+      opts
+      |> Keyword.put(:name, name)
+      |> Keyword.put(:fields, %{})
+      |> Keyword.put_new(:storage, Storage.Memory.new([]))
+      |> Keyword.put_new(:attrs, Store.Attr.default())
 
-    struct(__MODULE__, name: name, fields: %{}, storage: storage)
+    struct(__MODULE__, opts)
   end
 
   @doc """
@@ -59,5 +66,19 @@ defmodule Haystack.Index do
   @spec field(t, Index.Field.t()) :: t
   def field(index, field) do
     %{index | fields: Map.put(index.fields, field.k, field)}
+  end
+
+  @doc """
+  Set the storage on the index.
+
+  ## Examples
+
+    iex> index = Index.new(:people)
+    iex> Index.storage(index, Storage.Memory.new())
+
+  """
+  @spec storage(t, struct) :: t
+  def storage(index, storage) do
+    %{index | storage: storage}
   end
 end
