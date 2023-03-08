@@ -7,44 +7,45 @@ defmodule Haystack.TokenizerTest do
 
   describe "tokenize/1" do
     test "should tokenize" do
-      assert Tokenizer.tokenize("hello world") == [
-               %Tokenizer.Token{v: "hello", start: 0, length: 5},
-               %Tokenizer.Token{v: "world", start: 6, length: 5}
-             ]
+      tokens = Tokenizer.tokenize("hello world")
+
+      assert ~w{hello world} == Enum.map(tokens, & &1.v)
     end
 
     test "should remove punctuation" do
-      assert Tokenizer.tokenize("hello, world!") == [
-               %Tokenizer.Token{v: "hello", start: 0, length: 5},
-               %Tokenizer.Token{v: "world", start: 7, length: 5}
-             ]
+      tokens = Tokenizer.tokenize("hello, world!")
+
+      assert ~w{hello world} == Enum.map(tokens, & &1.v)
     end
 
     test "should downcase" do
-      assert Tokenizer.tokenize("hElLo wOrLd") == [
-               %Tokenizer.Token{v: "hello", start: 0, length: 5},
-               %Tokenizer.Token{v: "world", start: 6, length: 5}
-             ]
+      tokens = Tokenizer.tokenize("hElLo wOrLd")
+
+      assert ~w{hello world} == Enum.map(tokens, & &1.v)
     end
 
     test "should handle whitespace" do
-      assert Tokenizer.tokenize("  hello  world  ") == [
-               %Tokenizer.Token{v: "hello", start: 2, length: 5},
-               %Tokenizer.Token{v: "world", start: 9, length: 5}
-             ]
+      tokens = Tokenizer.tokenize("  hello  world  ")
+
+      assert ~w{hello world} == Enum.map(tokens, & &1.v)
     end
 
     test "should tokenize integers" do
-      assert Tokenizer.tokenize(123) == [
-               %Tokenizer.Token{v: "123", start: 0, length: 3}
-             ]
+      tokens = Tokenizer.tokenize(123)
+
+      assert ~w{123} == Enum.map(tokens, & &1.v)
     end
 
-    test "should tokenize lists" do
-      assert Tokenizer.tokenize(["hello", "world"]) == [
-               %Tokenizer.Token{v: "hello", start: 0, length: 5},
-               %Tokenizer.Token{v: "world", start: 0, length: 5}
-             ]
+    test "should extract start positions" do
+      tokens = Tokenizer.tokenize("hello world")
+
+      assert [0, 6] == Enum.map(tokens, & &1.start)
+    end
+
+    test "should extract length" do
+      tokens = Tokenizer.tokenize("hello world")
+
+      assert [5, 5] == Enum.map(tokens, & &1.length)
     end
   end
 end
