@@ -33,15 +33,14 @@ defmodule Haystack.Storage.Memory do
 
   ## Examples
 
-    iex> s = Storage.Memory.new()
-    iex> s = Storage.Memory.insert(s, :a, "a")
-    iex> Storage.Memory.fetch(s, :a)
-    {:ok, "a"}
-
-    iex> s = Storage.Memory.new()
-    iex> s = Storage.Memory.insert(s, :a, "a")
-    iex> Storage.Memory.fetch(s, :b)
+    iex> storage = Storage.Memory.new()
+    iex> Storage.Memory.fetch(storage, :name)
     {:error, %Storage.NotFoundError{message: "Not found"}}
+
+    iex> storage = Storage.Memory.new()
+    iex> storage = Storage.Memory.insert(storage, :name, "Haystack")
+    iex> Storage.Memory.fetch(storage, :name)
+    {:ok, "Haystack"}
 
   """
   @impl true
@@ -57,10 +56,10 @@ defmodule Haystack.Storage.Memory do
 
   ## Examples
 
-    iex> s = Storage.Memory.new()
-    iex> s = Storage.Memory.insert(s, :a, "a")
-    iex> Storage.Memory.fetch!(s, :a)
-    "a"
+    iex> storage = Storage.Memory.new()
+    iex> storage = Storage.Memory.insert(storage, :name, "Haystack")
+    iex> Storage.Memory.fetch!(storage, :name)
+    "Haystack"
 
   """
   @impl true
@@ -76,10 +75,10 @@ defmodule Haystack.Storage.Memory do
 
   ## Examples
 
-    iex> s = Storage.Memory.new()
-    iex> s = Storage.Memory.insert(s, :a, "a")
-    iex> Storage.Memory.fetch!(s, :a)
-    "a"
+    iex> storage = Storage.Memory.new()
+    iex> storage = Storage.Memory.insert(storage, :name, "Haystack")
+    iex> Storage.Memory.fetch!(storage, :name)
+    "Haystack"
 
   """
   @impl true
@@ -92,16 +91,15 @@ defmodule Haystack.Storage.Memory do
 
   ## Examples
 
-    iex> s = Storage.Memory.new()
-    iex> s = Storage.Memory.insert(s, :a, "a")
-    iex> {:ok, s} = Storage.Memory.update(s, :a, & &1 <> &1)
-    iex> Storage.Memory.fetch!(s, :a)
-    "aa"
+    iex> storage = Storage.Memory.new()
+    iex> Storage.Memory.update(storage, :name, &String.upcase/1)
+    {:error, %Storage.NotFoundError{message: "Not found"}}
 
-    iex> s = Storage.Memory.new()
-    iex> s = Storage.Memory.insert(s, :a, "a")
-    iex> Storage.Memory.update(s, :b, & &1 <> &1)
-    iex> {:error, %Storage.NotFoundError{message: "Not found"}}
+    iex> storage = Storage.Memory.new()
+    iex> storage = Storage.Memory.insert(storage, :name, "Haystack")
+    iex> {:ok, storage} = Storage.Memory.update(storage, :name, &String.upcase/1)
+    iex> Storage.Memory.fetch!(storage, :name)
+    "HAYSTACK"
 
   """
   @impl true
@@ -116,11 +114,11 @@ defmodule Haystack.Storage.Memory do
 
   ## Examples
 
-    iex> s = Storage.Memory.new()
-    iex> s = Storage.Memory.insert(s, :a, "a")
-    iex> s = Storage.Memory.update!(s, :a, & &1 <> &1)
-    iex> Storage.Memory.fetch!(s, :a)
-    "aa"
+    iex> storage = Storage.Memory.new()
+    iex> storage = Storage.Memory.insert(storage, :name, "Haystack")
+    iex> storage = Storage.Memory.update!(storage, :name, &String.upcase/1)
+    iex> Storage.Memory.fetch!(storage, :name)
+    "HAYSTACK"
 
   """
   @impl true
@@ -136,16 +134,16 @@ defmodule Haystack.Storage.Memory do
 
   ## Examples
 
-    iex> s = Storage.Memory.new()
-    iex> s = Storage.Memory.upsert(s, :a, "a", fn _ -> "a" end)
-    iex> Storage.Memory.fetch!(s, :a)
-    "a"
+    iex> storage = Storage.Memory.new()
+    iex> storage = Storage.Memory.upsert(storage, :name, "HAYSTACK", &String.upcase/1)
+    iex> Storage.Memory.fetch!(storage, :name)
+    "HAYSTACK"
 
-    iex> s = Storage.Memory.new()
-    iex> s = Storage.Memory.insert(s, :a, "a1")
-    iex> s = Storage.Memory.upsert(s, :a, "a2", fn _ -> "a2" end)
-    iex> Storage.Memory.fetch!(s, :a)
-    "a2"
+    iex> storage = Storage.Memory.new()
+    iex> storage = Storage.Memory.insert(storage, :name, "Haystack")
+    iex> storage = Storage.Memory.upsert(storage, :name, "HAYSTACK", &String.upcase/1)
+    iex> Storage.Memory.fetch!(storage, :name)
+    "HAYSTACK"
 
   """
   @impl true
@@ -161,10 +159,15 @@ defmodule Haystack.Storage.Memory do
 
   ## Examples
 
-    iex> s = Storage.Memory.new()
-    iex> s = Storage.Memory.insert(s, :a, "a")
-    iex> s = Storage.Memory.delete(s, :a)
-    iex> Storage.Memory.fetch(s, :a)
+    iex> storage = Storage.Memory.new()
+    iex> storage = Storage.Memory.delete(storage, :name)
+    iex> Storage.Memory.fetch(storage, :name)
+    {:error, %Storage.NotFoundError{message: "Not found"}}
+
+    iex> storage = Storage.Memory.new()
+    iex> storage = Storage.Memory.insert(storage, :name, "Haystack")
+    iex> storage = Storage.Memory.delete(storage, :name)
+    iex> Storage.Memory.fetch(storage, :name)
     {:error, %Storage.NotFoundError{message: "Not found"}}
 
   """
