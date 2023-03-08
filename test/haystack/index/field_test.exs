@@ -3,7 +3,7 @@ defmodule Haystack.Index.FieldTest do
 
   alias Haystack.Index
 
-  doctest Haystack.Index
+  doctest Index.Field
 
   describe "new/1" do
     test "should create field" do
@@ -16,6 +16,16 @@ defmodule Haystack.Index.FieldTest do
 
       assert field.k == "address.town"
       assert field.path == ["address", "town"]
+    end
+  end
+
+  describe "term/1" do
+    test "should create new term field" do
+      field = Index.Field.term("id")
+
+      assert field.k == "id"
+      assert field.path == ["id"]
+      assert field.transformers == []
     end
   end
 end
