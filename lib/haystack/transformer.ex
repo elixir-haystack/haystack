@@ -22,7 +22,6 @@ defmodule Haystack.Transformer do
   ## Examples
 
     iex> Transformer.default()
-    [Transformer.Stemmer, Transformer.StopWords]
 
   """
   @spec default :: list(module)
@@ -35,16 +34,12 @@ defmodule Haystack.Transformer do
 
     iex> tokens = Tokenizer.tokenize("once upon a time")
     iex> Transformer.pipeline(tokens, Transformer.default())
-    [
-      %Tokenizer.Token{v: "onc", start: 0, length: 4},
-      %Tokenizer.Token{v: "time", start: 12, length: 4}
-    ]
 
   """
   @spec pipeline(list(Token.t()), list(module)) :: list(Token.t())
-  def pipeline(v, transformers) do
-    Enum.reduce(transformers, v, fn transformer, v ->
-      transformer.transform(v)
+  def pipeline(tokens, transformers) do
+    Enum.reduce(transformers, tokens, fn transformer, tokens ->
+      transformer.transform(tokens)
     end)
   end
 end

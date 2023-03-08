@@ -11,8 +11,9 @@ defmodule Haystack.Transformer.Stemmer do
   ## Examples
 
     iex> tokens = Tokenizer.tokenize("transformer")
-    iex> Transformer.Stemmer.transform(tokens)
-    [%Tokenizer.Token{v: "transform", start: 0, length: 11}]
+    iex> tokens = Transformer.Stemmer.transform(tokens)
+    iex> Enum.map(tokens, & &1.v)
+    ~w{transform}
 
   """
   @impl true

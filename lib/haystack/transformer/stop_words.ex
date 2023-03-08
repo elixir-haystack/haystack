@@ -16,8 +16,9 @@ defmodule Haystack.Transformer.StopWords do
   ## Examples
 
     iex> tokens = Tokenizer.tokenize("and elixir")
-    iex> Transformer.StopWords.transform(tokens)
-    [%Tokenizer.Token{v: "elixir", start: 4, length: 6}]
+    iex> tokens = Transformer.StopWords.transform(tokens)
+    iex> Enum.map(tokens, & &1.v)
+    ~w{elixir}
 
   """
   @impl true

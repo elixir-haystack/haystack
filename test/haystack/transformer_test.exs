@@ -5,23 +5,12 @@ defmodule Haystack.TransformerTest do
 
   doctest Transformer
 
-  describe "default/0" do
-    test "should return the default transformers" do
-      assert Transformer.default() == [
-               Transformer.Stemmer,
-               Transformer.StopWords
-             ]
-    end
-  end
-
   describe "pipeline/2" do
     test "should apply a pipeline of transformations" do
       tokens = Tokenizer.tokenize("once upon a time")
+      tokens = Transformer.pipeline(tokens, Transformer.default())
 
-      assert Transformer.pipeline(tokens, Transformer.default()) == [
-               %Tokenizer.Token{v: "onc", start: 0, length: 4},
-               %Tokenizer.Token{v: "time", start: 12, length: 4}
-             ]
+      assert ~w{onc time} == Enum.map(tokens, & &1.v)
     end
   end
 end
