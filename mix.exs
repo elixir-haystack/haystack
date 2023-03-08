@@ -6,6 +6,7 @@ defmodule Haystack.MixProject do
       app: :haystack,
       version: "0.1.0",
       elixir: "~> 1.14",
+      elixirc_paths: elixirc_paths(Mix.env()),
       start_permanent: Mix.env() == :prod,
       deps: deps(),
       test_coverage: [tool: ExCoveralls],
@@ -20,6 +21,10 @@ defmodule Haystack.MixProject do
     ]
   end
 
+  # Specifies which paths to compile per environment.
+  defp elixirc_paths(:test), do: ["lib", "test/support"]
+  defp elixirc_paths(_), do: ["lib"]
+
   # Run "mix help compile.app" to learn about applications.
   def application do
     [
@@ -33,7 +38,8 @@ defmodule Haystack.MixProject do
       {:credo, "~> 1.6", only: [:dev, :test], runtime: false},
       {:dialyxir, "~> 1.2", only: [:dev], runtime: false},
       {:excoveralls, "~> 0.15", only: :test},
-      {:stemmer, "~> 1.1"}
+      {:stemmer, "~> 1.1"},
+      {:jason, "~> 1.4"}
     ]
   end
 

@@ -1,0 +1,17 @@
+{
+  "name": "Bald Eagle",
+  "scientific_name": "Haliaeetus leucocephalus",
+  "class": "Aves",
+  "order": "Accipitriformes",
+  "family": "Accipitridae",
+  "diet": "Carnivore",
+  "habitat": "Forests, coasts, and wetlands",
+  "conservation_status": "Least Concern",
+  "average_lifespan": "20-30 years",
+  "size": {
+    "length": "71-96 cm",
+    "wingspan": "1.8-2.3 m",
+    "weight": "3-7 kg"
+  },
+  "description": "The bald eagle is a bird of prey found in North America, known for its distinctive white head and dark brown body. It is a powerful and opportunistic hunter, feeding mainly on fish but also taking small mammals and other birds. Bald eagles are typically found near bodies of water, such as rivers, lakes, and coastlines, where they can easily spot and catch their prey. They are a symbol of the United States and were once threatened by habitat loss and hunting, but have since made a successful recovery through conservation efforts."
+}

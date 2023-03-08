@@ -1,0 +1,16 @@
+{
+  "name": "Humpback Whale",
+  "scientific_name": "Megaptera novaeangliae",
+  "class": "Mammalia",
+  "order": "Cetacea",
+  "family": "Balaenopteridae",
+  "diet": "Carnivore",
+  "habitat": "All oceans and seas",
+  "conservation_status": "Least Concern",
+  "average_lifespan": "45-50 years",
+  "size": {
+    "length": "12-16 m",
+    "weight": "25-30 metric tons"
+  },
+  "description": "The humpback whale is a large marine mammal found in oceans and seas around the world. It is known for its long, haunting songs and acrobatic displays such as breaching and tail-slapping. Humpback whales feed on small fish, krill and plankton, using their baleen plates to filter their food from the water. They are known for their annual migration between their breeding and feeding grounds. Although they are classified as least concern by the IUCN, they were historically heavily hunted for their blubber and meat, leading to population declines. Conservation efforts have led to a rebound in some populations."
+}

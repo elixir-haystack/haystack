@@ -1,0 +1,16 @@
+{
+  "name": "Giant Panda",
+  "scientific_name": "Ailuropoda melanoleuca",
+  "class": "Mammalia",
+  "order": "Carnivora",
+  "family": "Ursidae",
+  "diet": "Herbivore",
+  "habitat": "Bamboo forests",
+  "conservation_status": "Vulnerable",
+  "average_lifespan": "20 years",
+  "size": {
+    "length": "1.2-1.8 m",
+    "weight": "70-125 kg"
+  },
+  "description": "The giant panda is a bear native to China and known for its distinctive black and white fur pattern. They are herbivores, feeding almost exclusively on bamboo, and have a specialized digestive system to extract nutrients from the tough bamboo fibers. Giant pandas are solitary animals, with males and females only coming together during the breeding season. They are threatened by habitat loss and fragmentation, as well as human activities such as poaching and the illegal wildlife trade."
+}
