@@ -10,9 +10,11 @@ defmodule Haystack.Index do
 
   defstruct @enforce_keys
 
+  @type attrs :: %{insert: list(module), delete: list(module)}
+  @type fields :: %{Index.Field.k() => Index.Field.t()}
   @type t :: %__MODULE__{
-          attrs: %{insert: list(module), delete: list(module)},
-          fields: %{Index.Field.k() => Index.Field.t()},
+          attrs: attrs,
+          fields: fields,
           name: atom,
           ref: Index.Field.t(),
           storage: struct()
@@ -25,7 +27,7 @@ defmodule Haystack.Index do
 
   ## Examples
 
-    iex> Index.new(:people)
+    iex> Index.new(:animals)
 
   """
   @spec new(atom, opts) :: t
@@ -41,11 +43,25 @@ defmodule Haystack.Index do
   end
 
   @doc """
+  Set the attrs of the index.
+
+  ## Examples
+
+    iex> index = Index.new(:animals)
+    iex> Index.attrs(index, %{insert: [Global], delete: [Global]})
+
+  """
+  @spec attrs(t, attrs) :: t
+  def attrs(index, attrs) do
+    %{index | attrs: attrs}
+  end
+
+  @doc """
   Add a ref to the index.
 
   ## Examples
 
-    iex> index = Index.new(:people)
+    iex> index = Index.new(:animals)
     iex> Index.ref(index, Index.Field.new("id"))
 
   """
@@ -59,7 +75,7 @@ defmodule Haystack.Index do
 
   ## Examples
 
-    iex> index = Index.new(:people)
+    iex> index = Index.new(:animals)
     iex> Index.field(index, Index.Field.new("name"))
 
   """
@@ -73,7 +89,7 @@ defmodule Haystack.Index do
 
   ## Examples
 
-    iex> index = Index.new(:people)
+    iex> index = Index.new(:animals)
     iex> Index.storage(index, Storage.Memory.new())
 
   """

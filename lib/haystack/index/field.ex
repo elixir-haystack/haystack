@@ -9,13 +9,13 @@ defmodule Haystack.Index.Field do
 
   defstruct @enforce_keys
 
+  @type k :: String.t()
   @type t :: %__MODULE__{
           k: k,
           path: list(String.t()),
           separator: Regex.t(),
           transformers: list(module)
         }
-  @type k :: String.t()
 
   @doc """
   Create a new field.
