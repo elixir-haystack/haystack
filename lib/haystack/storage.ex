@@ -59,6 +59,11 @@ defmodule Haystack.Storage do
   @callback delete(t, k) :: t
 
   @doc """
+  Return the count of items in storage.
+  """
+  @callback count(t) :: integer
+
+  @doc """
   Dump the storage to the filesystem.
   """
   @callback dump!(t, Path.t()) :: :ok
@@ -196,6 +201,21 @@ defmodule Haystack.Storage do
     do: delegate(storage, :delete, [k])
 
   @doc """
+  Return the count of items in storage.
+
+  ## Examples
+
+    iex> storage = Storage.Memory.new()
+    iex> storage = Storage.insert(storage, :name, "Haystack")
+    iex> Storage.count(storage)
+    1
+
+  """
+  @spec count(t) :: integer
+  def count(storage),
+    do: delegate(storage, :count, [])
+
+  @doc """
   Dump the storage to the filesystem.
   """
   @spec dump!(t, Path.t()) :: :ok
@@ -204,7 +224,6 @@ defmodule Haystack.Storage do
 
   # Private
 
-  defp delegate(%module{} = storage, func, args) do
-    apply(module, func, [storage] ++ args)
-  end
+  defp delegate(%module{} = storage, func, args),
+    do: apply(module, func, [storage] ++ args)
 end

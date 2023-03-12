@@ -177,6 +177,22 @@ defmodule Haystack.Storage.Memory do
   end
 
   @doc """
+  Return the count of items in storage.
+
+  ## Examples
+
+    iex> storage = Storage.Memory.new()
+    iex> storage = Storage.insert(storage, :name, "Haystack")
+    iex> Storage.count(storage)
+    1
+
+  """
+  @impl true
+  def count(storage) do
+    Enum.count(storage.data)
+  end
+
+  @doc """
   Dump the storage to the filesystem.
   """
   @impl true

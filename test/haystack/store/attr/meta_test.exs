@@ -22,7 +22,7 @@ defmodule Haystack.Store.Attr.MetaTest do
     test "should insert", %{key: key, index: index, docs: docs} do
       %{storage: storage} = Enum.reduce(docs, index, &Meta.insert(&2, &1))
 
-      assert %{positions: [{0, 3}]} == Storage.fetch!(storage, key)
+      assert %{positions: [{0, 3}], tf: 0.5} == Storage.fetch!(storage, key)
     end
   end
 

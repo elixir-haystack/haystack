@@ -93,6 +93,12 @@ defmodule Haystack.Storage.MemoryTest do
     end
   end
 
+  describe "count/1" do
+    test "should return count", %{storage: storage} do
+      assert Storage.Memory.count(storage) == 1
+    end
+  end
+
   describe "dump!/2" do
     @tag :tmp_dir
     test "should dump", %{storage: storage, tmp_dir: dir} do

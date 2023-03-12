@@ -25,6 +25,12 @@ defmodule Haystack.Store.Attr.Global do
   def delete(index, ref) do
     storage = Storage.upsert(index.storage, key(), ref, &(&1 -- [ref]))
 
+    storage =
+      case Storage.fetch!(storage, key()) do
+        [] -> Storage.delete(storage, key())
+        _ -> storage
+      end
+
     Index.storage(index, storage)
   end
 end

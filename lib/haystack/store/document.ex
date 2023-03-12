@@ -18,15 +18,14 @@ defmodule Haystack.Store.Document do
   def new(index, params) do
     fields = [index.ref | index.fields |> Map.values()]
 
-    doc =
+    {[%{v: ref}], fields} =
       params
       |> normalize()
       |> extract(fields)
       |> tokenize()
       |> transform()
       |> Enum.into(%{})
-
-    {[%{v: ref}], fields} = Map.pop!(doc, index.ref.k)
+      |> Map.pop!(index.ref.k)
 
     struct(__MODULE__, ref: ref, fields: fields)
   end

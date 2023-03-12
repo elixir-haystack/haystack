@@ -1,9 +1,15 @@
 defmodule Haystack.IndexTest do
   use ExUnit.Case, async: true
 
+  import Haystack.Fixture
+
   alias Haystack.{Index, Storage}
 
   doctest Haystack.Index
+
+  setup do
+    fixture(:animals)
+  end
 
   describe "new/2" do
     test "should create index" do
@@ -28,6 +34,32 @@ defmodule Haystack.IndexTest do
       index = Index.field(index, Index.Field.new("name"))
 
       assert index.fields["name"].k == "name"
+    end
+  end
+
+  describe "add/2" do
+    test "should add", %{index: index, data: data} do
+      index = Index.add(index, data)
+
+      assert Storage.count(index.storage) > 0
+    end
+  end
+
+  describe "update/2" do
+    test "should update", %{index: index, data: data} do
+      index = Index.add(index, data)
+      index = Index.update(index, data)
+
+      assert Storage.count(index.storage) > 0
+    end
+  end
+
+  describe "delete/2" do
+    test "should delete", %{index: index, data: data} do
+      index = Index.add(index, data)
+      index = Index.delete(index, Enum.map(data, & &1.id))
+
+      assert Storage.count(index.storage) == 0
     end
   end
 end

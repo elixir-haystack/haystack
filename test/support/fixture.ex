@@ -1,31 +1,14 @@
 defmodule Haystack.Fixture do
-  @moduledoc """
-  Fixture helpers for tests
-  """
+  @moduledoc false
 
-  alias __MODULE__
-  alias Haystack.{Index, Store}
+  alias Haystack.Fixture
 
-  @animals Fixture.Builder.build("/animals/*.json")
+  def data(:animals),
+    do: Fixture.Animal.data()
 
-  @doc false
-  def data(:animals), do: @animals
+  def fixture(:animals),
+    do: Fixture.Animal.fixture()
 
-  @doc false
-  def fixture(:animals) do
-    data = data(:animals)
-    index = index(:animals)
-    docs = Enum.map(data, &Store.Document.new(index, &1))
-
-    %{data: data, docs: docs, index: index}
-  end
-
-  @doc false
-  def index(:animals) do
-    Index.new(:animals)
-    |> Index.ref(Index.Field.term("id"))
-    |> Index.field(Index.Field.new("name"))
-    |> Index.field(Index.Field.new("habitat"))
-    |> Index.field(Index.Field.new("description"))
-  end
+  def index(:animals),
+    do: Fixture.Animal.index()
 end

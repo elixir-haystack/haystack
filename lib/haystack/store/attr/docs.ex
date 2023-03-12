@@ -44,9 +44,15 @@ defmodule Haystack.Store.Attr.Docs do
           k = key(field: k, term: term)
           total = Enum.count(Storage.fetch!(storage, Attr.Global.key())) - 1
 
-          Storage.update!(storage, k, fn {_, refs} ->
-            idf(total, refs -- [ref])
-          end)
+          storage =
+            Storage.update!(storage, k, fn {_, refs} ->
+              idf(total, refs -- [ref])
+            end)
+
+          case Storage.fetch!(storage, k) do
+            {0, []} -> Storage.delete(storage, k)
+            _ -> storage
+          end
         end)
       end)
 

@@ -4,11 +4,12 @@ defmodule Haystack.Store do
   """
 
   alias Haystack.Index
+  alias Haystack.Store.Document
 
   @doc """
   Insert docs into the store.
   """
-  @spec insert(Index.t(), list(map)) :: Index.t()
+  @spec insert(Index.t(), list(Document.t())) :: Index.t()
   def insert(index, docs) do
     Enum.reduce(docs, index, fn doc, index ->
       Enum.reduce(index.attrs.insert, index, fn module, index ->
@@ -20,7 +21,7 @@ defmodule Haystack.Store do
   @doc """
   Update docs in the store.
   """
-  @spec update(Index.t(), list(map)) :: Index.t()
+  @spec update(Index.t(), list(Document.t())) :: Index.t()
   def update(index, docs) do
     index = delete(index, Enum.map(docs, &Map.get(&1, :ref)))
 

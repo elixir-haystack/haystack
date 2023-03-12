@@ -27,7 +27,7 @@ defmodule Haystack.Store.Attr.Meta do
       Enum.reduce(fields, index.storage, fn {field, terms}, storage ->
         Enum.reduce(terms, storage, fn term, storage ->
           k = key(ref: ref, field: field, term: term.v)
-          Storage.insert(storage, k, %{positions: term.positions})
+          Storage.insert(storage, k, Map.take(term, [:positions, :tf]))
         end)
       end)
 

@@ -32,7 +32,7 @@ defmodule Haystack.Store.Attr.DocsTest do
       index = Enum.reduce(docs, index, &Docs.insert(&2, &1))
       index = Enum.reduce(docs, index, &Docs.delete(&2, &1.ref))
 
-      assert {0, []} = Storage.fetch!(index.storage, key)
+      assert {:error, _} = Storage.fetch(index.storage, key)
     end
   end
 end

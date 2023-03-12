@@ -97,4 +97,32 @@ defmodule Haystack.Index do
   def storage(index, storage) do
     %{index | storage: storage}
   end
+
+  @doc """
+  Add documents to the index.
+  """
+  @spec add(t, list(map)) :: t
+  def add(index, data) do
+    data
+    |> Enum.map(&Store.Document.new(index, &1))
+    |> then(&Store.insert(index, &1))
+  end
+
+  @doc """
+  Update documents in the index.
+  """
+  @spec update(t, list(map)) :: t
+  def update(index, data) do
+    data
+    |> Enum.map(&Store.Document.new(index, &1))
+    |> then(&Store.update(index, &1))
+  end
+
+  @doc """
+  Delete documents in the index.
+  """
+  @spec delete(t, list(map)) :: t
+  def delete(index, refs) do
+    Store.delete(index, refs)
+  end
 end

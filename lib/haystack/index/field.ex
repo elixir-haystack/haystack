@@ -1,6 +1,6 @@
 defmodule Haystack.Index.Field do
   @moduledoc """
-  A module for index fields
+  A module for index fields.
   """
 
   alias Haystack.{Tokenizer, Transformer}
