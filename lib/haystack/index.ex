@@ -4,7 +4,7 @@ defmodule Haystack.Index do
   """
 
   alias __MODULE__
-  alias Haystack.{Storage, Store}
+  alias Haystack.{Query, Storage, Store}
 
   @enforce_keys ~w{attrs fields name ref storage}a
 
@@ -52,9 +52,8 @@ defmodule Haystack.Index do
 
   """
   @spec attrs(t, attrs) :: t
-  def attrs(index, attrs) do
-    %{index | attrs: attrs}
-  end
+  def attrs(index, attrs),
+    do: %{index | attrs: attrs}
 
   @doc """
   Add a ref to the index.
@@ -66,9 +65,8 @@ defmodule Haystack.Index do
 
   """
   @spec ref(t, Index.Field.t()) :: t
-  def ref(index, ref) do
-    %{index | ref: ref}
-  end
+  def ref(index, ref),
+    do: %{index | ref: ref}
 
   @doc """
   Add a field to the index.
@@ -80,9 +78,8 @@ defmodule Haystack.Index do
 
   """
   @spec field(t, Index.Field.t()) :: t
-  def field(index, field) do
-    %{index | fields: Map.put(index.fields, field.key, field)}
-  end
+  def field(index, field),
+    do: %{index | fields: Map.put(index.fields, field.key, field)}
 
   @doc """
   Set the storage on the index.
@@ -94,9 +91,8 @@ defmodule Haystack.Index do
 
   """
   @spec storage(t, struct) :: t
-  def storage(index, storage) do
-    %{index | storage: storage}
-  end
+  def storage(index, storage),
+    do: %{index | storage: storage}
 
   @doc """
   Add documents to the index.
@@ -122,7 +118,13 @@ defmodule Haystack.Index do
   Delete documents in the index.
   """
   @spec delete(t, list(map)) :: t
-  def delete(index, refs) do
-    Store.delete(index, refs)
-  end
+  def delete(index, refs),
+    do: Store.delete(index, refs)
+
+  @doc """
+  Search the index.
+  """
+  @spec search(t, Query.t()) :: list(map)
+  def search(index, %Query{} = query),
+    do: Query.run(query, index)
 end
