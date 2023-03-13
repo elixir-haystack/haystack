@@ -12,7 +12,8 @@ defmodule Haystack.Query.Clause.AllTest do
 
   describe "evaluate/2" do
     test "should not match", %{index: index, data: data} do
-      query = Query.new(Index.add(index, data))
+      query = Query.new()
+      index = Index.add(index, data)
 
       clause =
         Clause.expressions(Clause.new(:all), [
@@ -21,11 +22,12 @@ defmodule Haystack.Query.Clause.AllTest do
 
       statements = [Clause.build(clause)]
 
-      assert Enum.empty?(Clause.All.evaluate(query, statements))
+      assert Enum.empty?(Clause.All.evaluate(query, index, statements))
     end
 
     test "should match", %{index: index, data: data} do
-      query = Query.new(Index.add(index, data))
+      query = Query.new()
+      index = Index.add(index, data)
 
       clause =
         Clause.expressions(Clause.new(:all), [
@@ -34,7 +36,7 @@ defmodule Haystack.Query.Clause.AllTest do
 
       statements = [Clause.build(clause)]
 
-      assert Enum.count(Clause.All.evaluate(query, statements)) == 2
+      assert Enum.count(Clause.All.evaluate(query, index, statements)) == 2
     end
   end
 end

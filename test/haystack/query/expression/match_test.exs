@@ -12,17 +12,17 @@ defmodule Haystack.Query.Expression.MatchTest do
 
   describe "evaluate/2" do
     test "should not match", %{index: index, data: data} do
-      query = Query.new(Index.add(index, data))
+      index = Index.add(index, data)
       expression = Query.Expression.new(:match, field: "name", term: "invalid")
 
-      assert Enum.empty?(Match.evaluate(query, expression))
+      assert Enum.empty?(Match.evaluate(index, expression))
     end
 
     test "should match", %{index: index, data: data} do
-      query = Query.new(Index.add(index, data))
+      index = Index.add(index, data)
       expression = Query.Expression.new(:match, field: "name", term: "panda")
 
-      assert Enum.count(Match.evaluate(query, expression)) == 2
+      assert Enum.count(Match.evaluate(index, expression)) == 2
     end
   end
 end

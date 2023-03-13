@@ -8,8 +8,8 @@ defmodule Haystack.Query.Clause.All do
   @behaviour Query.Clause
 
   @impl true
-  def evaluate(query, statements) do
-    responses = Enum.map(statements, & &1.(query))
+  def evaluate(query, index, statements) do
+    responses = Enum.map(statements, & &1.(query, index))
 
     [result | results] =
       Enum.map(responses, fn results ->

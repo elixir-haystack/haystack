@@ -13,7 +13,8 @@ defmodule Haystack.QueryTest do
 
   describe "run/2" do
     test "should run query", %{index: index, data: data} do
-      query = Query.new(Index.add(index, data))
+      index = Index.add(index, data)
+      query = Query.new()
 
       clause =
         Query.Clause.expressions(Query.Clause.new(:all), [
@@ -23,7 +24,7 @@ defmodule Haystack.QueryTest do
 
       query = Query.clause(query, clause)
 
-      assert Enum.count(Query.run(query)) == 2
+      assert Enum.count(Query.run(query, index)) == 2
     end
   end
 end

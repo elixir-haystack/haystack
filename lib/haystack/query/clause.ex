@@ -3,7 +3,7 @@ defmodule Haystack.Query.Clause do
   A module for defining query clauses.
   """
 
-  alias Haystack.Query
+  alias Haystack.{Index, Query}
   alias Haystack.Query.Clause
 
   @type key :: atom
@@ -20,7 +20,7 @@ defmodule Haystack.Query.Clause do
   @doc """
   Evaluate the given clause.
   """
-  @callback evaluate(Query.t(), list(Query.statement())) :: list(map())
+  @callback evaluate(Query.t(), Index.t(), list(Query.statement())) :: list(map())
 
   @doc """
   Create a new clause.
@@ -73,13 +73,13 @@ defmodule Haystack.Query.Clause do
   """
   @spec build(t) :: Query.statement()
   def build(clause) do
-    fn query ->
+    fn query, index ->
       statements =
         clause.expressions
         |> Enum.map(&Query.Expression.build/1)
         |> Enum.concat(Enum.map(clause.clauses, &build/1))
 
-      Query.evaluate(query, clause, statements)
+      Query.evaluate(query, index, clause, statements)
     end
   end
 

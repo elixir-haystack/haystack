@@ -5,9 +5,8 @@ defmodule Haystack.Query do
 
   alias Haystack.{Index, Query}
 
-  @type statement :: (Query.t() -> list(map()))
+  @type statement :: (Query.t(), Index.t() -> list(map()))
   @type t :: %__MODULE__{
-          index: Index.t(),
           clause: Query.Clause.t(),
           config: Keyword.t()
         }
@@ -17,18 +16,15 @@ defmodule Haystack.Query do
   @doc """
   Create a new Query.
   """
-  @spec new(Index.t(), Keyword.t()) :: t
-  def new(index, opts \\ []) do
-    opts =
-      opts
-      |> Keyword.put(:index, index)
-      |> Keyword.put_new(:config, default())
+  @spec new(Keyword.t()) :: t
+  def new(opts \\ []) do
+    opts = Keyword.put_new(opts, :config, default())
 
     struct(__MODULE__, opts)
   end
 
   @doc """
-  Add a clause to the query
+  Add a clause to the query.
   """
   @spec clause(t, Query.Clause.t()) :: t
   def clause(query, clause) do
@@ -38,28 +34,28 @@ defmodule Haystack.Query do
   @doc """
   Evaluate a clause.
   """
-  @spec evaluate(t(), Query.Clause.t(), list(statement)) :: list(map())
-  def evaluate(query, clause, statements) do
+  @spec evaluate(t(), Index.t(), Query.Clause.t(), list(statement)) :: list(map())
+  def evaluate(query, index, clause, statements) do
     module = get_in(query.config, [:clauses, clause.key])
-    module.evaluate(query, statements)
+    module.evaluate(query, index, statements)
   end
 
   @doc """
   Evaluate an expression.
   """
-  @spec evaluate(t(), Query.Expression.t()) :: list(map())
-  def evaluate(query, expression) do
+  @spec evaluate(t(), Index.t(), Query.Expression.t()) :: list(map())
+  def evaluate(query, index, expression) do
     module = get_in(query.config, [:expressions, expression.key])
-    module.evaluate(query, expression)
+    module.evaluate(index, expression)
   end
 
   @doc """
   Run the given query.
   """
-  @spec run(t) :: list(map)
-  def run(query) do
+  @spec run(t, Index.t()) :: list(map)
+  def run(query, index) do
     statement = Query.Clause.build(query.clause)
-    responses = statement.(query)
+    responses = statement.(query, index)
 
     responses
     |> Enum.group_by(& &1.ref)

@@ -3,7 +3,7 @@ defmodule Haystack.Query.Expression do
   A module for defining query expressions.
   """
 
-  alias Haystack.Query
+  alias Haystack.{Index, Query}
 
   @type key :: atom
   @type t :: %__MODULE__{
@@ -19,7 +19,7 @@ defmodule Haystack.Query.Expression do
   @doc """
   Evaluate the given clause.
   """
-  @callback evaluate(Query.t(), t) :: list(map())
+  @callback evaluate(Index.t(), t) :: list(map())
 
   @doc """
   Create a new expression.
@@ -45,8 +45,8 @@ defmodule Haystack.Query.Expression do
   """
   @spec build(t) :: Query.statement()
   def build(expression) do
-    fn query ->
-      Query.evaluate(query, expression)
+    fn query, index ->
+      Query.evaluate(query, index, expression)
     end
   end
 
