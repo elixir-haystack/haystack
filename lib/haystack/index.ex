@@ -11,7 +11,7 @@ defmodule Haystack.Index do
   defstruct @enforce_keys
 
   @type attrs :: %{insert: list(module), delete: list(module)}
-  @type fields :: %{Index.Field.k() => Index.Field.t()}
+  @type fields :: %{Index.Field.key() => Index.Field.t()}
   @type t :: %__MODULE__{
           attrs: attrs,
           fields: fields,
@@ -81,7 +81,7 @@ defmodule Haystack.Index do
   """
   @spec field(t, Index.Field.t()) :: t
   def field(index, field) do
-    %{index | fields: Map.put(index.fields, field.k, field)}
+    %{index | fields: Map.put(index.fields, field.key, field)}
   end
 
   @doc """

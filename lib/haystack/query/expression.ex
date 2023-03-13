@@ -26,7 +26,7 @@ defmodule Haystack.Query.Expression do
 
   ## Examples
 
-    iex> expression = Query.Expression.new(:match, field: "name", term: "Haystack")
+    iex> Query.Expression.new(:match, field: "name", term: "Haystack")
 
   """
   @spec new(key, Keyword.t()) :: t

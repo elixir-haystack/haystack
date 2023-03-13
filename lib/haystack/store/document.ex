@@ -25,7 +25,7 @@ defmodule Haystack.Store.Document do
       |> tokenize()
       |> transform()
       |> Enum.into(%{})
-      |> Map.pop!(index.ref.k)
+      |> Map.pop!(index.ref.key)
 
     struct(__MODULE__, ref: ref, fields: fields)
   end
@@ -47,7 +47,7 @@ defmodule Haystack.Store.Document do
     fields
     |> Enum.map(fn field -> {get_in(map, field.path), field} end)
     |> Enum.reject(fn {v, _field} -> is_nil(v) end)
-    |> Enum.map(fn {v, field} -> {field.k, {v, field}} end)
+    |> Enum.map(fn {v, field} -> {field.key, {v, field}} end)
   end
 
   # Tokenize the values

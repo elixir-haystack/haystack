@@ -1,7 +1,7 @@
 defmodule Haystack.Index.FieldTest do
   use ExUnit.Case, async: true
 
-  alias Haystack.Index
+  alias Haystack.{Index, Tokenizer}
 
   doctest Index.Field
 
@@ -9,12 +9,14 @@ defmodule Haystack.Index.FieldTest do
     test "should create field" do
       field = Index.Field.new("title")
 
-      assert field.k == "title"
+      assert field.key == "title"
       assert field.path == ["title"]
+    end
 
+    test "should created nested field" do
       field = Index.Field.new("address.town")
 
-      assert field.k == "address.town"
+      assert field.key == "address.town"
       assert field.path == ["address", "town"]
     end
   end
@@ -23,9 +25,10 @@ defmodule Haystack.Index.FieldTest do
     test "should create term field" do
       field = Index.Field.term("id")
 
-      assert field.k == "id"
+      assert field.key == "id"
       assert field.path == ["id"]
       assert field.transformers == []
+      assert field.separator == Tokenizer.separator(:full)
     end
   end
 end
