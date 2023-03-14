@@ -22,11 +22,11 @@ defmodule Haystack.Tokenizer do
 
   ## Examples
 
-    iex> Tokenizer.separator(:default)
-    ~r/([[:alnum:]]+)/
+      iex> Tokenizer.separator(:default)
+      ~r/([[:alnum:]]+)/
 
-    iex> Tokenizer.separator(:full)
-    ~r/(.+)/
+      iex> Tokenizer.separator(:full)
+      ~r/(.+)/
 
   """
   @spec separator(atom) :: Regex.t()
@@ -38,9 +38,9 @@ defmodule Haystack.Tokenizer do
 
   ## Examples
 
-    iex> tokens = Tokenizer.tokenize("Needle in a Haystack")
-    iex> Enum.map(tokens, & &1.v)
-    ~w{needle in a haystack}
+      iex> tokens = Tokenizer.tokenize("Needle in a Haystack")
+      iex> Enum.map(tokens, & &1.v)
+      ~w{needle in a haystack}
 
   """
   @spec tokenize(term) :: list(Token.t())
@@ -51,9 +51,9 @@ defmodule Haystack.Tokenizer do
 
   ## Examples
 
-    iex> tokens = Tokenizer.tokenize("Needle in a Haystack", Tokenizer.separator(:default))
-    iex> Enum.map(tokens, & &1.v)
-    ~w{needle in a haystack}
+      iex> tokens = Tokenizer.tokenize("Needle in a Haystack", Tokenizer.separator(:default))
+      iex> Enum.map(tokens, & &1.v)
+      ~w{needle in a haystack}
 
   """
   @spec tokenize(term, Regex.t()) :: list(Token.t())

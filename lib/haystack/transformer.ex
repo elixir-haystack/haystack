@@ -29,8 +29,8 @@ defmodule Haystack.Transformer do
 
   ## Examples
 
-    iex> Transformer.default()
-    [Transformer.Stemmer, Transformer.StopWords]
+      iex> Transformer.default()
+      [Transformer.Stemmer, Transformer.StopWords]
 
   """
   @spec default :: list(module)
@@ -41,10 +41,10 @@ defmodule Haystack.Transformer do
 
   ## Examples
 
-    iex> tokens = Tokenizer.tokenize("Needle in a Haystack")
-    iex> tokens = Transformer.pipeline(tokens, Transformer.default())
-    iex> Enum.map(tokens, & &1.v)
-    ~w{needl haystack}
+      iex> tokens = Tokenizer.tokenize("Needle in a Haystack")
+      iex> tokens = Transformer.pipeline(tokens, Transformer.default())
+      iex> Enum.map(tokens, & &1.v)
+      ~w{needl haystack}
 
   """
   @spec pipeline(list(Token.t()), list(module)) :: list(Token.t())

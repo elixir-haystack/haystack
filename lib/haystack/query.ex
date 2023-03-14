@@ -84,11 +84,11 @@ defmodule Haystack.Query do
 
   ## Examples
 
-    iex> index = Index.new(:animals)
-    iex> index = Index.field(index, Index.Field.new("name"))
-    iex> tokens = Tokenizer.tokenize("Red Panda")
-    iex> tokens = Transformer.pipeline(tokens, Transformer.default())
-    iex> Query.build(:match_all, index, tokens)
+      iex> index = Index.new(:animals)
+      iex> index = Index.field(index, Index.Field.new("name"))
+      iex> tokens = Tokenizer.tokenize("Red Panda")
+      iex> tokens = Transformer.pipeline(tokens, Transformer.default())
+      iex> Query.build(:match_all, index, tokens)
 
   """
   @spec build(atom, Index.t(), list(Token.t())) :: Query.Clause.t()

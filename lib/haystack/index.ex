@@ -33,7 +33,7 @@ defmodule Haystack.Index do
 
   ## Examples
 
-    iex> Index.new(:animals)
+      iex> Index.new(:animals)
 
   """
   @spec new(atom, opts) :: t
@@ -53,8 +53,8 @@ defmodule Haystack.Index do
 
   ## Examples
 
-    iex> index = Index.new(:animals)
-    iex> Index.attrs(index, %{insert: [Global], delete: [Global]})
+      iex> index = Index.new(:animals)
+      iex> Index.attrs(index, %{insert: [Global], delete: [Global]})
 
   """
   @spec attrs(t, attrs) :: t
@@ -66,8 +66,8 @@ defmodule Haystack.Index do
 
   ## Examples
 
-    iex> index = Index.new(:animals)
-    iex> Index.ref(index, Index.Field.new("id"))
+      iex> index = Index.new(:animals)
+      iex> Index.ref(index, Index.Field.new("id"))
 
   """
   @spec ref(t, Index.Field.t()) :: t
@@ -79,8 +79,8 @@ defmodule Haystack.Index do
 
   ## Examples
 
-    iex> index = Index.new(:animals)
-    iex> Index.field(index, Index.Field.new("name"))
+      iex> index = Index.new(:animals)
+      iex> Index.field(index, Index.Field.new("name"))
 
   """
   @spec field(t, Index.Field.t()) :: t
@@ -92,8 +92,8 @@ defmodule Haystack.Index do
 
   ## Examples
 
-    iex> index = Index.new(:animals)
-    iex> Index.storage(index, Storage.Memory.new())
+      iex> index = Index.new(:animals)
+      iex> Index.storage(index, Storage.Memory.new())
 
   """
   @spec storage(t, struct) :: t
@@ -105,8 +105,8 @@ defmodule Haystack.Index do
 
   ## Examples
 
-    iex> index = Index.new(:animals)
-    iex> Index.add(index, [])
+      iex> index = Index.new(:animals)
+      iex> Index.add(index, [])
 
   """
   @spec add(t, list(map)) :: t
@@ -121,8 +121,8 @@ defmodule Haystack.Index do
 
   ## Examples
 
-    iex> index = Index.new(:animals)
-    iex> Index.update(index, [])
+      iex> index = Index.new(:animals)
+      iex> Index.update(index, [])
 
   """
   @spec update(t, list(map)) :: t
@@ -137,8 +137,8 @@ defmodule Haystack.Index do
 
   ## Examples
 
-    iex> index = Index.new(:animals)
-    iex> Index.delete(index, [])
+      iex> index = Index.new(:animals)
+      iex> Index.delete(index, [])
 
   """
   @spec delete(t, list(map)) :: t
@@ -150,9 +150,9 @@ defmodule Haystack.Index do
 
     ## Examples
 
-    iex> index = Index.new(:animals)
-    iex> index = Index.field(index, Index.Field.new("name"))
-    iex> Index.search(index, "red panda")
+      iex> index = Index.new(:animals)
+      iex> index = Index.field(index, Index.Field.new("name"))
+      iex> Index.search(index, "red panda")
 
   """
   @spec search(t, String.t(), Keyword.t()) :: list(map)

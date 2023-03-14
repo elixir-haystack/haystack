@@ -22,7 +22,7 @@ defmodule Haystack.Storage.Memory do
 
   ## Examples
 
-    iex> Storage.Memory.new()
+      iex> Storage.Memory.new()
 
   """
   @impl Haystack.Storage
@@ -35,14 +35,14 @@ defmodule Haystack.Storage.Memory do
 
   ## Examples
 
-    iex> storage = Storage.Memory.new()
-    iex> Storage.Memory.fetch(storage, :name)
-    {:error, %Storage.NotFoundError{message: "Not found"}}
+      iex> storage = Storage.Memory.new()
+      iex> Storage.Memory.fetch(storage, :name)
+      {:error, %Storage.NotFoundError{message: "Not found"}}
 
-    iex> storage = Storage.Memory.new()
-    iex> storage = Storage.Memory.insert(storage, :name, "Haystack")
-    iex> Storage.Memory.fetch(storage, :name)
-    {:ok, "Haystack"}
+      iex> storage = Storage.Memory.new()
+      iex> storage = Storage.Memory.insert(storage, :name, "Haystack")
+      iex> Storage.Memory.fetch(storage, :name)
+      {:ok, "Haystack"}
 
   """
   @impl Haystack.Storage
@@ -58,10 +58,10 @@ defmodule Haystack.Storage.Memory do
 
   ## Examples
 
-    iex> storage = Storage.Memory.new()
-    iex> storage = Storage.Memory.insert(storage, :name, "Haystack")
-    iex> Storage.Memory.fetch!(storage, :name)
-    "Haystack"
+      iex> storage = Storage.Memory.new()
+      iex> storage = Storage.Memory.insert(storage, :name, "Haystack")
+      iex> Storage.Memory.fetch!(storage, :name)
+      "Haystack"
 
   """
   @impl Haystack.Storage
@@ -77,10 +77,10 @@ defmodule Haystack.Storage.Memory do
 
   ## Examples
 
-    iex> storage = Storage.Memory.new()
-    iex> storage = Storage.Memory.insert(storage, :name, "Haystack")
-    iex> Storage.Memory.fetch!(storage, :name)
-    "Haystack"
+      iex> storage = Storage.Memory.new()
+      iex> storage = Storage.Memory.insert(storage, :name, "Haystack")
+      iex> Storage.Memory.fetch!(storage, :name)
+      "Haystack"
 
   """
   @impl Haystack.Storage
@@ -93,15 +93,15 @@ defmodule Haystack.Storage.Memory do
 
   ## Examples
 
-    iex> storage = Storage.Memory.new()
-    iex> Storage.Memory.update(storage, :name, &String.upcase/1)
-    {:error, %Storage.NotFoundError{message: "Not found"}}
+      iex> storage = Storage.Memory.new()
+      iex> Storage.Memory.update(storage, :name, &String.upcase/1)
+      {:error, %Storage.NotFoundError{message: "Not found"}}
 
-    iex> storage = Storage.Memory.new()
-    iex> storage = Storage.Memory.insert(storage, :name, "Haystack")
-    iex> {:ok, storage} = Storage.Memory.update(storage, :name, &String.upcase/1)
-    iex> Storage.Memory.fetch!(storage, :name)
-    "HAYSTACK"
+      iex> storage = Storage.Memory.new()
+      iex> storage = Storage.Memory.insert(storage, :name, "Haystack")
+      iex> {:ok, storage} = Storage.Memory.update(storage, :name, &String.upcase/1)
+      iex> Storage.Memory.fetch!(storage, :name)
+      "HAYSTACK"
 
   """
   @impl Haystack.Storage
@@ -116,11 +116,11 @@ defmodule Haystack.Storage.Memory do
 
   ## Examples
 
-    iex> storage = Storage.Memory.new()
-    iex> storage = Storage.Memory.insert(storage, :name, "Haystack")
-    iex> storage = Storage.Memory.update!(storage, :name, &String.upcase/1)
-    iex> Storage.Memory.fetch!(storage, :name)
-    "HAYSTACK"
+      iex> storage = Storage.Memory.new()
+      iex> storage = Storage.Memory.insert(storage, :name, "Haystack")
+      iex> storage = Storage.Memory.update!(storage, :name, &String.upcase/1)
+      iex> Storage.Memory.fetch!(storage, :name)
+      "HAYSTACK"
 
   """
   @impl Haystack.Storage
@@ -136,16 +136,16 @@ defmodule Haystack.Storage.Memory do
 
   ## Examples
 
-    iex> storage = Storage.Memory.new()
-    iex> storage = Storage.Memory.upsert(storage, :name, "HAYSTACK", &String.upcase/1)
-    iex> Storage.Memory.fetch!(storage, :name)
-    "HAYSTACK"
+      iex> storage = Storage.Memory.new()
+      iex> storage = Storage.Memory.upsert(storage, :name, "HAYSTACK", &String.upcase/1)
+      iex> Storage.Memory.fetch!(storage, :name)
+      "HAYSTACK"
 
-    iex> storage = Storage.Memory.new()
-    iex> storage = Storage.Memory.insert(storage, :name, "Haystack")
-    iex> storage = Storage.Memory.upsert(storage, :name, "HAYSTACK", &String.upcase/1)
-    iex> Storage.Memory.fetch!(storage, :name)
-    "HAYSTACK"
+      iex> storage = Storage.Memory.new()
+      iex> storage = Storage.Memory.insert(storage, :name, "Haystack")
+      iex> storage = Storage.Memory.upsert(storage, :name, "HAYSTACK", &String.upcase/1)
+      iex> Storage.Memory.fetch!(storage, :name)
+      "HAYSTACK"
 
   """
   @impl Haystack.Storage
@@ -161,16 +161,16 @@ defmodule Haystack.Storage.Memory do
 
   ## Examples
 
-    iex> storage = Storage.Memory.new()
-    iex> storage = Storage.Memory.delete(storage, :name)
-    iex> Storage.Memory.fetch(storage, :name)
-    {:error, %Storage.NotFoundError{message: "Not found"}}
+      iex> storage = Storage.Memory.new()
+      iex> storage = Storage.Memory.delete(storage, :name)
+      iex> Storage.Memory.fetch(storage, :name)
+      {:error, %Storage.NotFoundError{message: "Not found"}}
 
-    iex> storage = Storage.Memory.new()
-    iex> storage = Storage.Memory.insert(storage, :name, "Haystack")
-    iex> storage = Storage.Memory.delete(storage, :name)
-    iex> Storage.Memory.fetch(storage, :name)
-    {:error, %Storage.NotFoundError{message: "Not found"}}
+      iex> storage = Storage.Memory.new()
+      iex> storage = Storage.Memory.insert(storage, :name, "Haystack")
+      iex> storage = Storage.Memory.delete(storage, :name)
+      iex> Storage.Memory.fetch(storage, :name)
+      {:error, %Storage.NotFoundError{message: "Not found"}}
 
   """
   @impl Haystack.Storage
@@ -183,10 +183,10 @@ defmodule Haystack.Storage.Memory do
 
   ## Examples
 
-    iex> storage = Storage.Memory.new()
-    iex> storage = Storage.insert(storage, :name, "Haystack")
-    iex> Storage.count(storage)
-    1
+      iex> storage = Storage.Memory.new()
+      iex> storage = Storage.insert(storage, :name, "Haystack")
+      iex> Storage.count(storage)
+      1
 
   """
   @impl Haystack.Storage

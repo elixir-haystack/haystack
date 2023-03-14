@@ -1,7 +1,9 @@
 defmodule Haystack do
-  @moduledoc """
-  Haystack is a simple, extendable search engine written in Elixir.
-  """
+  @external_resource "README.md"
+  @moduledoc "README.md"
+             |> File.read!()
+             |> String.split("<!-- MDOC !-->")
+             |> Enum.fetch!(1)
 
   alias Haystack.Index
 
@@ -22,7 +24,7 @@ defmodule Haystack do
 
   ## Examples
 
-    iex> Haystack.new()
+      iex> Haystack.new()
 
   """
   @spec new(Keyword.t()) :: t
@@ -34,8 +36,8 @@ defmodule Haystack do
 
   ## Examples
 
-    iex> haystack = Haystack.new()
-    iex> Haystack.index(haystack, :animals, &Function.identity/1)
+      iex> haystack = Haystack.new()
+      iex> Haystack.index(haystack, :animals, &Function.identity/1)
 
   """
   @spec index(t, atom, (Index.t() -> term)) :: t | term

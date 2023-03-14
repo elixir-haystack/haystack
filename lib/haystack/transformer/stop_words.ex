@@ -17,10 +17,10 @@ defmodule Haystack.Transformer.StopWords do
 
   ## Examples
 
-    iex> tokens = Tokenizer.tokenize("Needle in a Haystack")
-    iex> tokens = Transformer.StopWords.transform(tokens)
-    iex> Enum.map(tokens, & &1.v)
-    ~w{needle haystack}
+      iex> tokens = Tokenizer.tokenize("Needle in a Haystack")
+      iex> tokens = Transformer.StopWords.transform(tokens)
+      iex> Enum.map(tokens, & &1.v)
+      ~w{needle haystack}
 
   """
   @impl Haystack.Transformer

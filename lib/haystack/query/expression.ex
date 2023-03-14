@@ -34,7 +34,7 @@ defmodule Haystack.Query.Expression do
 
   ## Examples
 
-    iex> Query.Expression.new(:match, field: "name", term: "Haystack")
+      iex> Query.Expression.new(:match, field: "name", term: "Haystack")
 
   """
   @spec new(k, Keyword.t()) :: t
@@ -46,7 +46,7 @@ defmodule Haystack.Query.Expression do
 
   ## Examples
 
-    iex> Query.Expression.default()
+      iex> Query.Expression.default()
 
   """
   @spec default :: [{atom, module}]
@@ -57,8 +57,8 @@ defmodule Haystack.Query.Expression do
 
   ## Examples
 
-    iex> expression = Query.Expression.new(:match, field: "name", term: "Haystack")
-    iex> Query.Expression.build(expression)
+      iex> expression = Query.Expression.new(:match, field: "name", term: "Haystack")
+      iex> Query.Expression.build(expression)
 
   """
   @spec build(t) :: Query.statement()

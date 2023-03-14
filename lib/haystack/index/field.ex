@@ -28,13 +28,13 @@ defmodule Haystack.Index.Field do
 
   ## Examples
 
-    iex> field = Index.Field.new("name")
-    iex> field.k
-    "name"
+      iex> field = Index.Field.new("name")
+      iex> field.k
+      "name"
 
-    iex> field = Index.Field.new("address.line_1")
-    iex> field.path
-    ["address", "line_1"]
+      iex> field = Index.Field.new("address.line_1")
+      iex> field.path
+      ["address", "line_1"]
 
   """
   @spec new(k, Keyword.t()) :: t
@@ -57,9 +57,9 @@ defmodule Haystack.Index.Field do
 
   ## Examples
 
-    iex> field = Index.Field.term("id")
-    iex> field.transformers
-    []
+      iex> field = Index.Field.term("id")
+      iex> field.transformers
+      []
 
   """
   @spec term(k) :: t

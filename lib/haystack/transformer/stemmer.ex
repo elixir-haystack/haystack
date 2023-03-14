@@ -12,10 +12,10 @@ defmodule Haystack.Transformer.Stemmer do
 
   ## Examples
 
-    iex> tokens = Tokenizer.tokenize("Needle in a Haystack")
-    iex> tokens = Transformer.Stemmer.transform(tokens)
-    iex> Enum.map(tokens, & &1.v)
-    ~w{needl in a haystack}
+      iex> tokens = Tokenizer.tokenize("Needle in a Haystack")
+      iex> tokens = Transformer.Stemmer.transform(tokens)
+      iex> Enum.map(tokens, & &1.v)
+      ~w{needl in a haystack}
 
   """
   @impl Haystack.Transformer

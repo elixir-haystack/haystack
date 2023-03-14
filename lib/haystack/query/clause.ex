@@ -36,7 +36,7 @@ defmodule Haystack.Query.Clause do
 
   ## Examples
 
-    iex> Query.Clause.new(:any)
+      iex> Query.Clause.new(:any)
 
   """
   @spec new(k) :: t
@@ -48,7 +48,7 @@ defmodule Haystack.Query.Clause do
 
   ## Examples
 
-    iex> Query.Clause.default()
+      iex> Query.Clause.default()
 
   """
   @spec default :: [{atom, module}]
@@ -59,8 +59,8 @@ defmodule Haystack.Query.Clause do
 
   ## Examples
 
-    iex> clause = Query.Clause.new(:any)
-    iex> Query.Clause.clauses(clause, [Query.Clause.new(:any)])
+      iex> clause = Query.Clause.new(:any)
+      iex> Query.Clause.clauses(clause, [Query.Clause.new(:any)])
 
   """
   def clauses(clause, clauses),
@@ -71,9 +71,9 @@ defmodule Haystack.Query.Clause do
 
   ## Examples
 
-    iex> clause = Query.Clause.new(:any)
-    iex> expression = Query.Expression.new(:match, field: "name", term: "Haystack")
-    iex> Query.Clause.expressions(clause, [expression])
+      iex> clause = Query.Clause.new(:any)
+      iex> expression = Query.Expression.new(:match, field: "name", term: "Haystack")
+      iex> Query.Clause.expressions(clause, [expression])
 
   """
   def expressions(clause, expressions),
@@ -84,8 +84,8 @@ defmodule Haystack.Query.Clause do
 
   ## Examples
 
-    iex> clause = Query.Clause.new(:any)
-    iex> Query.Clause.build(clause)
+      iex> clause = Query.Clause.new(:any)
+      iex> Query.Clause.build(clause)
 
   """
   @spec build(t) :: Query.statement()

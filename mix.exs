@@ -11,6 +11,9 @@ defmodule Haystack.MixProject do
       deps: deps(),
       test_coverage: [tool: ExCoveralls],
       dialyzer: dialyzer(),
+      name: "Haystack",
+      source_url: "https://github.com/elixir-haystack/haystack",
+      homepage_url: "https://github.com/elixir-haystack/haystack",
       preferred_cli_env: [
         coveralls: :test,
         "coveralls.detail": :test,
@@ -37,6 +40,7 @@ defmodule Haystack.MixProject do
     [
       {:credo, "~> 1.6", only: [:dev, :test], runtime: false},
       {:dialyxir, "~> 1.2", only: [:dev], runtime: false},
+      {:ex_doc, "~> 0.27", only: :dev, runtime: false},
       {:excoveralls, "~> 0.15", only: :test},
       {:stemmer, "~> 1.1"},
       {:jason, "~> 1.4"}

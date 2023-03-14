@@ -24,7 +24,7 @@ defmodule Haystack.Tokenizer.Token do
 
   ## Examples
 
-    iex> Token.new("abc", offset: 0, length: 3)
+      iex> Token.new("abc", offset: 0, length: 3)
 
   """
   @spec new(String.t(), opts) :: t

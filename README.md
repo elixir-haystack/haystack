@@ -1,8 +1,10 @@
 # Haystack
 
+<!-- MDOC !-->
+
 [![Build Status](https://github.com/elixir-haystack/haystack/actions/workflows/ci.yml/badge.svg)](https://github.com/elixir-haystack/haystack/actions) [![Coverage Status](https://coveralls.io/repos/github/elixir-haystack/haystack/badge.svg?branch=main)](https://coveralls.io/github/elixir-haystack/haystack?branch=main)
 
-**TODO: Add description**
+**Haystack is a simple, extendable search engine written in Elixir.**
 
 ## Installation
 
