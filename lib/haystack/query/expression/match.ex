@@ -19,7 +19,13 @@ defmodule Haystack.Query.Expression.Match do
 
         %{tf: tf, positions: positions} = Storage.fetch!(index.storage, key)
 
-        %{ref: ref, field: exp.field, positions: positions, score: idf * tf}
+        %{
+          ref: ref,
+          field: exp.field,
+          positions: positions,
+          score: idf * tf,
+          term: exp.term
+        }
       end)
     end
   end

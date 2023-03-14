@@ -22,7 +22,6 @@ defmodule Haystack.Fixture.Animal do
     Index.new(:animals)
     |> Index.ref(Index.Field.term("id"))
     |> Index.field(Index.Field.new("name"))
-    |> Index.field(Index.Field.new("habitat"))
     |> Index.field(Index.Field.new("description"))
   end
 end

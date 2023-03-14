@@ -3,7 +3,7 @@ defmodule Haystack.IndexTest do
 
   import Haystack.Fixture
 
-  alias Haystack.{Index, Query, Storage}
+  alias Haystack.{Index, Storage}
 
   doctest Haystack.Index
 
@@ -47,22 +47,15 @@ defmodule Haystack.IndexTest do
 
   describe "update/2" do
     test "should update", %{index: index, data: [data | rest]} do
-      clause =
-        Query.Clause.expressions(Query.Clause.new(:all), [
-          Query.Expression.new(:match, field: "name", term: "otter")
-        ])
-
-      query = Query.clause(Query.new(), clause)
-
       index = Index.add(index, [data | rest])
 
-      assert Enum.empty?(Index.search(index, query))
+      assert Enum.empty?(Index.search(index, "otter", query: :match_any))
 
-      data = Map.put(data, :name, "Otter")
+      data = Map.put(data, :name, "otter")
 
       index = Index.update(index, [data])
 
-      assert Enum.count(Index.search(index, query)) == 1
+      assert Enum.count(Index.search(index, "otter", query: :match_any)) == 1
     end
   end
 
@@ -79,23 +72,8 @@ defmodule Haystack.IndexTest do
     test "should search", %{index: index, data: data} do
       index = Index.add(index, data)
 
-      clause =
-        Query.Clause.expressions(Query.Clause.new(:all), [
-          Query.Expression.new(:match, field: "name", term: "dog")
-        ])
-
-      query = Query.clause(Query.new(), clause)
-
-      assert Enum.empty?(Index.search(index, query))
-
-      clause =
-        Query.Clause.expressions(Query.Clause.new(:all), [
-          Query.Expression.new(:match, field: "name", term: "panda")
-        ])
-
-      query = Query.clause(Query.new(), clause)
-
-      assert Enum.count(Index.search(index, query)) == 2
+      assert Enum.empty?(Index.search(index, "dog"))
+      assert Enum.count(Index.search(index, "panda")) == 2
     end
   end
 end

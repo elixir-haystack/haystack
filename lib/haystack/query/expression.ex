@@ -38,9 +38,19 @@ defmodule Haystack.Query.Expression do
 
   """
   @spec new(k, Keyword.t()) :: t
-  def new(k, opts) do
-    struct(__MODULE__, [k: k] ++ opts)
-  end
+  def new(k, opts),
+    do: struct(__MODULE__, [k: k] ++ opts)
+
+  @doc """
+  Return the default expressions.
+
+  ## Examples
+
+    iex> Query.Expression.default()
+
+  """
+  @spec default :: [{atom, module}]
+  def default, do: @expressions
 
   @doc """
   Build the expression into a statement.
@@ -57,6 +67,4 @@ defmodule Haystack.Query.Expression do
       Query.evaluate(query, index, expression)
     end
   end
-
-  def default, do: @expressions
 end

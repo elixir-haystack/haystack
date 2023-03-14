@@ -3,7 +3,7 @@ defmodule Haystack.QueryTest do
 
   import Haystack.Fixture
 
-  alias Haystack.{Index, Query}
+  alias Haystack.{Index, Query, Tokenizer, Transformer}
 
   doctest Haystack.Query
 
@@ -25,6 +25,18 @@ defmodule Haystack.QueryTest do
       query = Query.clause(query, clause)
 
       assert Enum.count(Query.run(query, index)) == 2
+    end
+  end
+
+  describe "build/3" do
+    test "should build match all", %{index: index, data: data} do
+      index = Index.add(index, data)
+      tokens = Tokenizer.tokenize("red panda")
+      tokens = Transformer.pipeline(tokens, Transformer.default())
+
+      query = Query.clause(Query.new(), Query.build(:match_all, index, tokens))
+
+      assert Enum.count(Query.run(query, index)) == 1
     end
   end
 end

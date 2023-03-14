@@ -27,7 +27,6 @@ defmodule Haystack.Store.DocumentTest do
 
       for %{fields: fields} <- docs do
         assert Map.has_key?(fields, "name")
-        assert Map.has_key?(fields, "habitat")
         assert Map.has_key?(fields, "description")
       end
     end

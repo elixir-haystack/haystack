@@ -7,7 +7,7 @@ defmodule Haystack.Index do
   """
 
   alias __MODULE__
-  alias Haystack.{Query, Storage, Store}
+  alias Haystack.{Query, Storage, Store, Tokenizer, Transformer}
 
   # Types
 
@@ -147,8 +147,22 @@ defmodule Haystack.Index do
 
   @doc """
   Search the index.
+
+    ## Examples
+
+    iex> index = Index.new(:animals)
+    iex> index = Index.field(index, Index.Field.new("name"))
+    iex> Index.search(index, "red panda")
+
   """
-  @spec search(t, Query.t()) :: list(map)
-  def search(index, %Query{} = query),
-    do: Query.run(query, index)
+  @spec search(t, String.t(), Keyword.t()) :: list(map)
+  def search(index, v, opts \\ []) do
+    type = Keyword.get(opts, :query, :match_all)
+    tokens = Tokenizer.tokenize(v)
+    tokens = Transformer.pipeline(tokens, Transformer.default())
+
+    Query.new()
+    |> Query.clause(Query.build(type, index, tokens))
+    |> Query.run(index)
+  end
 end

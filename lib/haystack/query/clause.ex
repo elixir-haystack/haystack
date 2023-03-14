@@ -19,7 +19,8 @@ defmodule Haystack.Query.Clause do
 
   defstruct @enforce_keys
 
-  @clauses all: Clause.All
+  @clauses all: Clause.All,
+           any: Clause.Any
 
   # Behaviour
 
@@ -39,9 +40,19 @@ defmodule Haystack.Query.Clause do
 
   """
   @spec new(k) :: t
-  def new(k) do
-    struct(__MODULE__, k: k, clauses: [], expressions: [])
-  end
+  def new(k),
+    do: struct(__MODULE__, k: k, clauses: [], expressions: [])
+
+  @doc """
+  Return the default clauses.
+
+  ## Examples
+
+    iex> Query.Clause.default()
+
+  """
+  @spec default :: [{atom, module}]
+  def default, do: @clauses
 
   @doc """
   Add a list of clauses.
@@ -52,9 +63,8 @@ defmodule Haystack.Query.Clause do
     iex> Query.Clause.clauses(clause, [Query.Clause.new(:any)])
 
   """
-  def clauses(clause, clauses) do
-    %{clause | clauses: clause.clauses ++ clauses}
-  end
+  def clauses(clause, clauses),
+    do: %{clause | clauses: clause.clauses ++ clauses}
 
   @doc """
   Add a list of expressions.
@@ -66,9 +76,8 @@ defmodule Haystack.Query.Clause do
     iex> Query.Clause.expressions(clause, [expression])
 
   """
-  def expressions(clause, expressions) do
-    %{clause | expressions: clause.expressions ++ expressions}
-  end
+  def expressions(clause, expressions),
+    do: %{clause | expressions: clause.expressions ++ expressions}
 
   @doc """
   Build the clause into a statement.
@@ -90,14 +99,4 @@ defmodule Haystack.Query.Clause do
       Query.evaluate(query, index, clause, statements)
     end
   end
-
-  @doc """
-  Return the default clauses.
-
-  ## Examples
-
-    iex> Query.Clause.default()
-
-  """
-  def default, do: @clauses
 end
