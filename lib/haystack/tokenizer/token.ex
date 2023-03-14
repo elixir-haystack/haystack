@@ -3,24 +3,28 @@ defmodule Haystack.Tokenizer.Token do
   A module for Tokens.
   """
 
+  # Types
+
   @type v :: String.t()
-  @type opts :: [start: integer, length: integer]
+  @type opts :: [offset: integer, length: integer]
   @type t :: %__MODULE__{
           v: v,
-          start: integer,
+          offset: integer,
           length: integer
         }
 
-  @enforce_keys ~w{v start length}a
+  @enforce_keys ~w{v offset length}a
 
   defstruct @enforce_keys
+
+  # Public
 
   @doc """
   Create a new token.
 
   ## Examples
 
-    iex> Token.new("abc", start: 0, length: 3)
+    iex> Token.new("abc", offset: 0, length: 3)
 
   """
   @spec new(String.t(), opts) :: t

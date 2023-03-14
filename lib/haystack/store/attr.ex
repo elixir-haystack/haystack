@@ -12,7 +12,11 @@ defmodule Haystack.Store.Attr do
     Store.Attr.Meta
   ]
 
+  # Types
+
   @type opts :: Keyword.t()
+
+  # Behaviour
 
   @doc """
   The attr key.
@@ -28,6 +32,8 @@ defmodule Haystack.Store.Attr do
   Delete an attr.
   """
   @callback delete(Index.t(), Store.Document.t()) :: Index.t()
+
+  # Public
 
   @doc """
   Return the default attrs.

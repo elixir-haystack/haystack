@@ -7,10 +7,10 @@ defmodule Haystack.TransformerTest do
 
   describe "pipeline/2" do
     test "should apply a pipeline of transformations" do
-      tokens = Tokenizer.tokenize("once upon a time")
+      tokens = Tokenizer.tokenize("Needle in a Haystack")
       tokens = Transformer.pipeline(tokens, Transformer.default())
 
-      assert ~w{onc time} == Enum.map(tokens, & &1.v)
+      assert ~w{needl haystack} == Enum.map(tokens, & &1.v)
     end
   end
 end

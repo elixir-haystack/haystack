@@ -1,22 +1,33 @@
 defmodule Haystack.Storage do
   @moduledoc """
-  A behaviour for storing data.
+  A module and behaviour for storing data.
+
+  This module acts as a convenient way to delegate to the storage implementation
+  within Haystack.
+
+  This has been created as a behaviour to make it easy to provide your own
+  storage implementation. By default Haystack provides a memory storage
+  implementation, which uses a map to store data.
   """
+
+  # Types
 
   @type opts :: Keyword.t()
   @type t :: struct
   @type k :: term
   @type v :: term
 
+  # Errors
+
   defmodule NotFoundError do
     @moduledoc false
 
-    @type t :: %__MODULE__{
-            message: String.t()
-          }
+    @type t :: %__MODULE__{message: String.t()}
 
     defexception ~w{message}a
   end
+
+  # Behaviour
 
   @doc """
   Create a new storage.
@@ -72,6 +83,8 @@ defmodule Haystack.Storage do
   Load the storage from the filesystem.
   """
   @callback load!(Path.t()) :: t
+
+  # Public
 
   @doc """
   Fetch an item from storage.

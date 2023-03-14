@@ -12,16 +12,13 @@ defmodule Haystack.Store.Attr.Meta do
 
   defrecord :meta, ref: nil, field: nil, term: nil
 
-  @impl true
-  def key(opts) do
-    ref = Keyword.fetch!(opts, :ref)
-    field = Keyword.fetch!(opts, :field)
-    term = Keyword.fetch!(opts, :term)
+  # Public
 
-    meta(ref: ref, field: field, term: term)
-  end
+  @impl Store.Attr
+  def key(ref: ref, field: field, term: term),
+    do: meta(ref: ref, field: field, term: term)
 
-  @impl true
+  @impl Store.Attr
   def insert(index, %{ref: ref, fields: fields}) do
     storage =
       Enum.reduce(fields, index.storage, fn {field, terms}, storage ->
@@ -34,7 +31,7 @@ defmodule Haystack.Store.Attr.Meta do
     Index.storage(index, storage)
   end
 
-  @impl true
+  @impl Store.Attr
   def delete(index, ref) do
     storage =
       Enum.reduce(index.fields, index.storage, fn {k, _}, storage ->

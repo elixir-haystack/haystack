@@ -1,17 +1,19 @@
 defmodule Haystack.Index do
   @moduledoc """
   A module for managing indexes.
+
+  The index is used to manage configuration and acts as a central point to add,
+  update, delete, or query the storage.
   """
 
   alias __MODULE__
   alias Haystack.{Query, Storage, Store}
 
-  @enforce_keys ~w{attrs fields name ref storage}a
-
-  defstruct @enforce_keys
+  # Types
 
   @type attrs :: %{insert: list(module), delete: list(module)}
-  @type fields :: %{Index.Field.key() => Index.Field.t()}
+  @type fields :: %{Index.Field.k() => Index.Field.t()}
+  @type opts :: Keyword.t()
   @type t :: %__MODULE__{
           attrs: attrs,
           fields: fields,
@@ -20,7 +22,11 @@ defmodule Haystack.Index do
           storage: struct()
         }
 
-  @type opts :: Keyword.t()
+  @enforce_keys ~w{attrs fields name ref storage}a
+
+  defstruct @enforce_keys
+
+  # Public
 
   @doc """
   Create a new index.
@@ -79,7 +85,7 @@ defmodule Haystack.Index do
   """
   @spec field(t, Index.Field.t()) :: t
   def field(index, field),
-    do: %{index | fields: Map.put(index.fields, field.key, field)}
+    do: %{index | fields: Map.put(index.fields, field.k, field)}
 
   @doc """
   Set the storage on the index.
@@ -96,6 +102,12 @@ defmodule Haystack.Index do
 
   @doc """
   Add documents to the index.
+
+  ## Examples
+
+    iex> index = Index.new(:animals)
+    iex> Index.add(index, [])
+
   """
   @spec add(t, list(map)) :: t
   def add(index, data) do
@@ -106,6 +118,12 @@ defmodule Haystack.Index do
 
   @doc """
   Update documents in the index.
+
+  ## Examples
+
+    iex> index = Index.new(:animals)
+    iex> Index.update(index, [])
+
   """
   @spec update(t, list(map)) :: t
   def update(index, data) do
@@ -116,6 +134,12 @@ defmodule Haystack.Index do
 
   @doc """
   Delete documents in the index.
+
+  ## Examples
+
+    iex> index = Index.new(:animals)
+    iex> Index.delete(index, [])
+
   """
   @spec delete(t, list(map)) :: t
   def delete(index, refs),

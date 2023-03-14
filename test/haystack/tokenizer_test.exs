@@ -7,27 +7,27 @@ defmodule Haystack.TokenizerTest do
 
   describe "tokenize/1" do
     test "should tokenize" do
-      tokens = Tokenizer.tokenize("hello world")
+      tokens = Tokenizer.tokenize("Needle in a Haystack")
 
-      assert ~w{hello world} == Enum.map(tokens, & &1.v)
+      assert ~w{needle in a haystack} == Enum.map(tokens, & &1.v)
     end
 
     test "should remove punctuation" do
-      tokens = Tokenizer.tokenize("hello, world!")
+      tokens = Tokenizer.tokenize("needle, in a haystack!")
 
-      assert ~w{hello world} == Enum.map(tokens, & &1.v)
+      assert ~w{needle in a haystack} == Enum.map(tokens, & &1.v)
     end
 
     test "should downcase" do
-      tokens = Tokenizer.tokenize("hElLo wOrLd")
+      tokens = Tokenizer.tokenize("Needle in a Haystack")
 
-      assert ~w{hello world} == Enum.map(tokens, & &1.v)
+      assert ~w{needle in a haystack} == Enum.map(tokens, & &1.v)
     end
 
     test "should handle whitespace" do
-      tokens = Tokenizer.tokenize("  hello  world  ")
+      tokens = Tokenizer.tokenize("  needle   in    a    haystack  ")
 
-      assert ~w{hello world} == Enum.map(tokens, & &1.v)
+      assert ~w{needle in a haystack} == Enum.map(tokens, & &1.v)
     end
 
     test "should tokenize integers" do
@@ -36,16 +36,16 @@ defmodule Haystack.TokenizerTest do
       assert ~w{123} == Enum.map(tokens, & &1.v)
     end
 
-    test "should extract start positions" do
-      tokens = Tokenizer.tokenize("hello world")
+    test "should extract offset" do
+      tokens = Tokenizer.tokenize("Needle in a Haystack")
 
-      assert [0, 6] == Enum.map(tokens, & &1.start)
+      assert [0, 7, 10, 12] == Enum.map(tokens, & &1.offset)
     end
 
     test "should extract length" do
-      tokens = Tokenizer.tokenize("hello world")
+      tokens = Tokenizer.tokenize("Needle in a Haystack")
 
-      assert [5, 5] == Enum.map(tokens, & &1.length)
+      assert [6, 2, 1, 8] == Enum.map(tokens, & &1.length)
     end
   end
 end

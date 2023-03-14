@@ -5,18 +5,20 @@ defmodule Haystack.Transformer.Stemmer do
 
   @behaviour Haystack.Transformer
 
+  # Public
+
   @doc """
   Apply a stemming transformation on a list of tokens.
 
   ## Examples
 
-    iex> tokens = Tokenizer.tokenize("transformer")
+    iex> tokens = Tokenizer.tokenize("Needle in a Haystack")
     iex> tokens = Transformer.Stemmer.transform(tokens)
     iex> Enum.map(tokens, & &1.v)
-    ~w{transform}
+    ~w{needl in a haystack}
 
   """
-  @impl true
+  @impl Haystack.Transformer
   def transform(tokens) do
     Enum.map(tokens, fn token ->
       %{token | v: Stemmer.stem(token.v)}

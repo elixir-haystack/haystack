@@ -1,6 +1,10 @@
 defmodule Haystack.Transformer do
   @moduledoc """
-  A behaviour for transforming tokens.
+  A module for transforming tokens.
+
+  This module includes a transform/1 callback behaviour for implementing stages
+  of a transformation pipeline. The default pipeline transformers includes
+  stages for stemming and removing stop words.
   """
 
   alias __MODULE__
@@ -11,10 +15,14 @@ defmodule Haystack.Transformer do
     Transformer.StopWords
   ]
 
+  # Behaviour
+
   @doc """
   Apply a transformation on a list of tokens.
   """
   @callback transform(list(Token.t())) :: list(Token.t())
+
+  # Public
 
   @doc """
   Return the list of default transformers.
@@ -22,6 +30,7 @@ defmodule Haystack.Transformer do
   ## Examples
 
     iex> Transformer.default()
+    [Transformer.Stemmer, Transformer.StopWords]
 
   """
   @spec default :: list(module)
@@ -32,8 +41,10 @@ defmodule Haystack.Transformer do
 
   ## Examples
 
-    iex> tokens = Tokenizer.tokenize("once upon a time")
-    iex> Transformer.pipeline(tokens, Transformer.default())
+    iex> tokens = Tokenizer.tokenize("Needle in a Haystack")
+    iex> tokens = Transformer.pipeline(tokens, Transformer.default())
+    iex> Enum.map(tokens, & &1.v)
+    ~w{needl haystack}
 
   """
   @spec pipeline(list(Token.t()), list(module)) :: list(Token.t())

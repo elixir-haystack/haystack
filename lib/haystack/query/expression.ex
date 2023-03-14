@@ -5,21 +5,29 @@ defmodule Haystack.Query.Expression do
 
   alias Haystack.{Index, Query}
 
-  @type key :: atom
+  # Types
+
+  @type k :: atom
   @type t :: %__MODULE__{
-          key: key,
+          k: k,
           field: String.t(),
           term: String.t()
         }
 
-  defstruct ~w{key field term}a
+  @enforce_keys ~w{k field term}a
+
+  defstruct @enforce_keys
 
   @expressions match: Query.Expression.Match
+
+  # Behaviour
 
   @doc """
   Evaluate the given clause.
   """
   @callback evaluate(Index.t(), t) :: list(map())
+
+  # Public
 
   @doc """
   Create a new expression.
@@ -29,9 +37,9 @@ defmodule Haystack.Query.Expression do
     iex> Query.Expression.new(:match, field: "name", term: "Haystack")
 
   """
-  @spec new(key, Keyword.t()) :: t
-  def new(key, opts) do
-    struct(__MODULE__, [key: key] ++ opts)
+  @spec new(k, Keyword.t()) :: t
+  def new(k, opts) do
+    struct(__MODULE__, [k: k] ++ opts)
   end
 
   @doc """

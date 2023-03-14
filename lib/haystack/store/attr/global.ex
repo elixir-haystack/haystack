@@ -11,17 +11,19 @@ defmodule Haystack.Store.Attr.Global do
 
   defrecord :global, []
 
-  @impl true
+  # Public
+
+  @impl Store.Attr
   def key(_opts \\ []), do: global()
 
-  @impl true
+  @impl Store.Attr
   def insert(index, %{ref: ref}) do
     storage = Storage.upsert(index.storage, key(), [ref], &(&1 ++ [ref]))
 
     Index.storage(index, storage)
   end
 
-  @impl true
+  @impl Store.Attr
   def delete(index, ref) do
     storage = Storage.upsert(index.storage, key(), ref, &(&1 -- [ref]))
 

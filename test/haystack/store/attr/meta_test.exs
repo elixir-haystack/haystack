@@ -7,30 +7,34 @@ defmodule Haystack.Store.Attr.MetaTest do
   alias Haystack.Store.Attr.{Meta, Terms}
 
   setup do
-    key = Meta.key(ref: "1", field: "name", term: "red")
-
-    fixture(:animals) |> Map.put(:key, key)
+    fixture(:animals)
   end
 
   describe "key/0" do
-    test "should create key", %{key: key} do
+    test "should create key" do
+      key = Meta.key(ref: "1", field: "name", term: "red")
+
       assert {:meta, "1", "name", "red"} == key
     end
   end
 
   describe "insert/2" do
-    test "should insert", %{key: key, index: index, docs: docs} do
+    test "should insert", %{index: index, docs: docs} do
       %{storage: storage} = Enum.reduce(docs, index, &Meta.insert(&2, &1))
+
+      key = Meta.key(ref: "1", field: "name", term: "red")
 
       assert %{positions: [{0, 3}], tf: 0.5} == Storage.fetch!(storage, key)
     end
   end
 
   describe "delete/2" do
-    test "should delete", %{key: key, index: index, docs: docs} do
+    test "should delete", %{index: index, docs: docs} do
       index = Enum.reduce(docs, index, &Terms.insert(&2, &1))
       index = Enum.reduce(docs, index, &Meta.insert(&2, &1))
       index = Enum.reduce(docs, index, &Meta.delete(&2, &1.ref))
+
+      key = Meta.key(ref: "1", field: "name", term: "red")
 
       assert {:error, _} = Storage.fetch(index.storage, key)
     end

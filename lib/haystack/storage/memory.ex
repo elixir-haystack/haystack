@@ -7,13 +7,15 @@ defmodule Haystack.Storage.Memory do
 
   @behaviour Haystack.Storage
 
-  @type t :: %__MODULE__{
-          data: %{term => term}
-        }
+  # Types
+
+  @type t :: %__MODULE__{data: %{term => term}}
 
   @enforce_keys ~w{data}a
 
   defstruct @enforce_keys
+
+  # Public
 
   @doc """
   Create a new storage.
@@ -23,7 +25,7 @@ defmodule Haystack.Storage.Memory do
     iex> Storage.Memory.new()
 
   """
-  @impl true
+  @impl Haystack.Storage
   def new(_opts \\ []) do
     struct(__MODULE__, data: %{})
   end
@@ -43,7 +45,7 @@ defmodule Haystack.Storage.Memory do
     {:ok, "Haystack"}
 
   """
-  @impl true
+  @impl Haystack.Storage
   def fetch(storage, k) do
     case Map.fetch(storage.data, k) do
       {:ok, v} -> {:ok, v}
@@ -62,7 +64,7 @@ defmodule Haystack.Storage.Memory do
     "Haystack"
 
   """
-  @impl true
+  @impl Haystack.Storage
   def fetch!(storage, k) do
     case fetch(storage, k) do
       {:ok, v} -> v
@@ -81,7 +83,7 @@ defmodule Haystack.Storage.Memory do
     "Haystack"
 
   """
-  @impl true
+  @impl Haystack.Storage
   def insert(storage, k, v) do
     Map.update!(storage, :data, &Map.put(&1, k, v))
   end
@@ -102,7 +104,7 @@ defmodule Haystack.Storage.Memory do
     "HAYSTACK"
 
   """
-  @impl true
+  @impl Haystack.Storage
   def update(storage, k, f) do
     with {:ok, v} <- fetch(storage, k) do
       {:ok, Map.update!(storage, :data, &Map.put(&1, k, f.(v)))}
@@ -121,7 +123,7 @@ defmodule Haystack.Storage.Memory do
     "HAYSTACK"
 
   """
-  @impl true
+  @impl Haystack.Storage
   def update!(storage, k, f) do
     case update(storage, k, f) do
       {:ok, storage} -> storage
@@ -146,7 +148,7 @@ defmodule Haystack.Storage.Memory do
     "HAYSTACK"
 
   """
-  @impl true
+  @impl Haystack.Storage
   def upsert(storage, k, v, f) do
     case update(storage, k, f) do
       {:ok, storage} -> storage
@@ -171,7 +173,7 @@ defmodule Haystack.Storage.Memory do
     {:error, %Storage.NotFoundError{message: "Not found"}}
 
   """
-  @impl true
+  @impl Haystack.Storage
   def delete(storage, k) do
     Map.update!(storage, :data, &Map.delete(&1, k))
   end
@@ -187,7 +189,7 @@ defmodule Haystack.Storage.Memory do
     1
 
   """
-  @impl true
+  @impl Haystack.Storage
   def count(storage) do
     Enum.count(storage.data)
   end
@@ -195,7 +197,7 @@ defmodule Haystack.Storage.Memory do
   @doc """
   Dump the storage to the filesystem.
   """
-  @impl true
+  @impl Haystack.Storage
   def dump!(storage, path) do
     File.write!(path, :erlang.term_to_binary(storage))
   end
@@ -203,7 +205,7 @@ defmodule Haystack.Storage.Memory do
   @doc """
   Load the storage from the filesystem.
   """
-  @impl true
+  @impl Haystack.Storage
   def load!(path) do
     :erlang.binary_to_term(File.read!(path))
   end

@@ -8,13 +8,13 @@ defmodule Haystack.Index.Field do
 
   alias Haystack.{Tokenizer, Transformer}
 
-  @enforce_keys ~w{key path separator transformers}a
+  @enforce_keys ~w{k path separator transformers}a
 
   defstruct @enforce_keys
 
-  @type key :: String.t()
+  @type k :: String.t()
   @type t :: %__MODULE__{
-          key: key,
+          k: k,
           path: list(String.t()),
           separator: Regex.t(),
           transformers: list(module)
@@ -29,7 +29,7 @@ defmodule Haystack.Index.Field do
   ## Examples
 
     iex> field = Index.Field.new("name")
-    iex> field.key
+    iex> field.k
     "name"
 
     iex> field = Index.Field.new("address.line_1")
@@ -37,12 +37,12 @@ defmodule Haystack.Index.Field do
     ["address", "line_1"]
 
   """
-  @spec new(key, Keyword.t()) :: t
-  def new(key, opts \\ []) do
+  @spec new(k, Keyword.t()) :: t
+  def new(k, opts \\ []) do
     opts =
       opts
-      |> Keyword.put(:key, key)
-      |> Keyword.put(:path, String.split(key, "."))
+      |> Keyword.put(:k, k)
+      |> Keyword.put(:path, String.split(k, "."))
       |> Keyword.put_new(:transformers, Transformer.default())
       |> Keyword.put_new(:separator, Tokenizer.separator(:default))
 
@@ -62,8 +62,8 @@ defmodule Haystack.Index.Field do
     []
 
   """
-  @spec term(key) :: t
-  def term(key) do
-    new(key, transformers: [], separator: Tokenizer.separator(:full))
+  @spec term(k) :: t
+  def term(k) do
+    new(k, transformers: [], separator: Tokenizer.separator(:full))
   end
 end

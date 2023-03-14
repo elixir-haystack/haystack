@@ -37,9 +37,9 @@ defmodule Haystack.Storage.MemoryTest do
 
   describe "insert/3" do
     test "should insert", %{storage: storage} do
-      storage = Storage.Memory.insert(storage, :desc, "Haystack is...")
+      storage = Storage.Memory.insert(storage, :desc, "Needle in a Haystack")
 
-      assert "Haystack is..." == Storage.Memory.fetch!(storage, :desc)
+      assert "Needle in a Haystack" == Storage.Memory.fetch!(storage, :desc)
     end
   end
 
@@ -73,7 +73,7 @@ defmodule Haystack.Storage.MemoryTest do
 
   describe "upsert/3" do
     test "should upsert", %{storage: storage} do
-      desc = "Haystack is..."
+      desc = "Needle in a Haystack"
 
       storage = Storage.Memory.upsert(storage, :desc, desc, &String.upcase/1)
 
@@ -112,15 +112,15 @@ defmodule Haystack.Storage.MemoryTest do
     @tag :tmp_dir
     test "fail to load", %{tmp_dir: dir} do
       assert_raise File.Error, fn ->
-        Storage.Memory.load!(Path.join(dir, "storage.memoria"))
+        Storage.Memory.load!(Path.join(dir, "storage.haystack"))
       end
     end
 
     @tag :tmp_dir
     test "should load", %{storage: storage, tmp_dir: dir} do
-      Storage.Memory.dump!(storage, Path.join(dir, "storage.memoria"))
+      Storage.Memory.dump!(storage, Path.join(dir, "storage.haystack"))
 
-      storage = Storage.Memory.load!(Path.join(dir, "storage.memoria"))
+      storage = Storage.Memory.load!(Path.join(dir, "storage.haystack"))
 
       assert "Haystack" == Storage.Memory.fetch!(storage, :name)
     end

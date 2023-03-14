@@ -3,18 +3,20 @@ defmodule Haystack.StoreTest do
 
   import Haystack.Fixture
 
-  alias Haystack.{Storage, Store}
+  alias Haystack.{Index, Storage, Store}
   alias Haystack.Store.Attr.Terms
   alias Haystack.Store.Document
 
   doctest Store
 
   setup do
-    fixture(:animals) |> Map.put(:key, Terms.key(ref: "1", field: "name"))
+    fixture(:animals)
   end
 
   describe "insert/2" do
-    test "should insert", %{key: key, index: index, docs: docs} do
+    test "should insert", %{index: index, docs: docs} do
+      key = Terms.key(ref: "1", field: "name")
+
       index = Store.insert(index, docs)
 
       assert ~w{panda red} = Storage.fetch!(index.storage, key) |> Enum.sort()
@@ -22,7 +24,8 @@ defmodule Haystack.StoreTest do
   end
 
   describe "update/2" do
-    test "should update", %{key: key, index: index, data: data, docs: docs} do
+    test "should update", %{index: index, data: data, docs: docs} do
+      key = Terms.key(ref: "1", field: "name")
       index = Store.insert(index, docs)
 
       doc =
@@ -38,7 +41,8 @@ defmodule Haystack.StoreTest do
   end
 
   describe "delete/2" do
-    test "should delete", %{key: key, index: index, docs: docs} do
+    test "should delete", %{index: index, docs: docs} do
+      key = Terms.key(ref: "1", field: "name")
       index = Store.insert(index, docs)
       index = Store.delete(index, Enum.map(docs, &Map.get(&1, :ref)))
 

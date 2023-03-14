@@ -24,7 +24,7 @@ defmodule Haystack.IndexTest do
       index = Index.new(:animals)
       index = Index.ref(index, Index.Field.new("id"))
 
-      assert index.ref.key == "id"
+      assert index.ref.k == "id"
     end
   end
 
@@ -33,7 +33,7 @@ defmodule Haystack.IndexTest do
       index = Index.new(:animals)
       index = Index.field(index, Index.Field.new("name"))
 
-      assert index.fields["name"].key == "name"
+      assert index.fields["name"].k == "name"
     end
   end
 

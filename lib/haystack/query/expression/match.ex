@@ -9,8 +9,10 @@ defmodule Haystack.Query.Expression.Match do
 
   @behaviour Query.Expression
 
-  @impl true
-  def evaluate(index, %Query.Expression{key: :match} = exp) do
+  # Public
+
+  @impl Query.Expression
+  def evaluate(index, %Query.Expression{k: :match} = exp) do
     with {:ok, {idf, refs}} <- refs(index, exp) do
       Enum.map(refs, fn ref ->
         key = Meta.key(ref: ref, field: exp.field, term: exp.term)
@@ -21,6 +23,8 @@ defmodule Haystack.Query.Expression.Match do
       end)
     end
   end
+
+  # Private
 
   defp refs(%{storage: storage}, exp) do
     case Storage.fetch(storage, Docs.key(field: exp.field, term: exp.term)) do

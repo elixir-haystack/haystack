@@ -37,9 +37,9 @@ defmodule Haystack.StorageTest do
 
   describe "insert/3" do
     test "should insert", %{storage: storage} do
-      storage = Storage.insert(storage, :desc, "Haystack is...")
+      storage = Storage.insert(storage, :desc, "Needle in a Haystack")
 
-      assert "Haystack is..." == Storage.fetch!(storage, :desc)
+      assert "Needle in a Haystack" == Storage.fetch!(storage, :desc)
     end
   end
 
@@ -73,7 +73,7 @@ defmodule Haystack.StorageTest do
 
   describe "upsert/3" do
     test "should upsert", %{storage: storage} do
-      desc = "Haystack is..."
+      desc = "Needle in a Haystack"
 
       storage = Storage.upsert(storage, :desc, desc, &String.upcase/1)
 

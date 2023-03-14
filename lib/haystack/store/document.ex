@@ -5,12 +5,18 @@ defmodule Haystack.Store.Document do
 
   alias Haystack.{Tokenizer, Transformer}
 
+  # Types
+
   @type t :: %__MODULE__{
           ref: String.t(),
           fields: %{String.t() => list(Tokenizer.Token.t())}
         }
 
-  defstruct ~w{ref fields}a
+  @enforce_keys ~w{ref fields}a
+
+  defstruct @enforce_keys
+
+  # Public
 
   @doc """
   Create a new document.
@@ -25,7 +31,7 @@ defmodule Haystack.Store.Document do
       |> tokenize()
       |> transform()
       |> Enum.into(%{})
-      |> Map.pop!(index.ref.key)
+      |> Map.pop!(index.ref.k)
 
     struct(__MODULE__, ref: ref, fields: fields)
   end
@@ -47,7 +53,7 @@ defmodule Haystack.Store.Document do
     fields
     |> Enum.map(fn field -> {get_in(map, field.path), field} end)
     |> Enum.reject(fn {v, _field} -> is_nil(v) end)
-    |> Enum.map(fn {v, field} -> {field.key, {v, field}} end)
+    |> Enum.map(fn {v, field} -> {field.k, {v, field}} end)
   end
 
   # Tokenize the values
@@ -68,7 +74,7 @@ defmodule Haystack.Store.Document do
         Enum.map(groups, fn {v, group} ->
           %{}
           |> Map.put(:v, v)
-          |> Map.put(:positions, Enum.map(group, &{&1.start, &1.length}))
+          |> Map.put(:positions, Enum.map(group, &{&1.offset, &1.length}))
           |> Map.put(:tf, Float.round(Map.get(counts, v) / Enum.count(tokens), 2))
         end)
 

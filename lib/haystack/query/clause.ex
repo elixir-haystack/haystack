@@ -6,21 +6,29 @@ defmodule Haystack.Query.Clause do
   alias Haystack.{Index, Query}
   alias Haystack.Query.Clause
 
-  @type key :: atom
+  # Types
+
+  @type k :: atom
   @type t :: %__MODULE__{
-          key: key,
+          k: k,
           clauses: list(t),
           expressions: list(Query.Expression.t())
         }
 
-  defstruct ~w{key clauses expressions}a
+  @enforce_keys ~w{k clauses expressions}a
+
+  defstruct @enforce_keys
 
   @clauses all: Clause.All
+
+  # Behaviour
 
   @doc """
   Evaluate the given clause.
   """
   @callback evaluate(Query.t(), Index.t(), list(Query.statement())) :: list(map())
+
+  # Public
 
   @doc """
   Create a new clause.
@@ -30,9 +38,9 @@ defmodule Haystack.Query.Clause do
     iex> Query.Clause.new(:any)
 
   """
-  @spec new(key) :: t
-  def new(key) do
-    struct(__MODULE__, key: key, clauses: [], expressions: [])
+  @spec new(k) :: t
+  def new(k) do
+    struct(__MODULE__, k: k, clauses: [], expressions: [])
   end
 
   @doc """

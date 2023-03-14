@@ -11,32 +11,30 @@ defmodule Haystack.Query do
           config: Keyword.t()
         }
 
-  defstruct ~w{index clause config}a
+  @enforce_keys ~w{index clause config}a
+
+  defstruct @enforce_keys
 
   @doc """
   Create a new Query.
   """
   @spec new(Keyword.t()) :: t
-  def new(opts \\ []) do
-    opts = Keyword.put_new(opts, :config, default())
-
-    struct(__MODULE__, opts)
-  end
+  def new(opts \\ []),
+    do: struct(__MODULE__, Keyword.put_new(opts, :config, default()))
 
   @doc """
   Add a clause to the query.
   """
   @spec clause(t, Query.Clause.t()) :: t
-  def clause(query, clause) do
-    %{query | clause: clause}
-  end
+  def clause(query, clause),
+    do: %{query | clause: clause}
 
   @doc """
   Evaluate a clause.
   """
   @spec evaluate(t(), Index.t(), Query.Clause.t(), list(statement)) :: list(map())
   def evaluate(query, index, clause, statements) do
-    module = get_in(query.config, [:clauses, clause.key])
+    module = get_in(query.config, [:clauses, clause.k])
     module.evaluate(query, index, statements)
   end
 
@@ -45,7 +43,7 @@ defmodule Haystack.Query do
   """
   @spec evaluate(t(), Index.t(), Query.Expression.t()) :: list(map())
   def evaluate(query, index, expression) do
-    module = get_in(query.config, [:expressions, expression.key])
+    module = get_in(query.config, [:expressions, expression.k])
     module.evaluate(index, expression)
   end
 

@@ -7,10 +7,10 @@ defmodule Haystack.Transformer.StemmerTest do
 
   describe "transform/1" do
     test "should stem text" do
-      tokens = Tokenizer.tokenize("transformer")
+      tokens = Tokenizer.tokenize("Needle in a Haystack")
       tokens = Transformer.Stemmer.transform(tokens)
 
-      assert ~w{transform} == Enum.map(tokens, & &1.v)
+      assert ~w{needl in a haystack} == Enum.map(tokens, & &1.v)
     end
   end
 end

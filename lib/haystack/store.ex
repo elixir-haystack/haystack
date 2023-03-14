@@ -1,15 +1,26 @@
 defmodule Haystack.Store do
   @moduledoc """
   A module for managing the data store.
+
+  The store manages the interaction between applying the documents to the index.
+  It does this by using the configured index :attrs and applying the correct
+  action.
   """
 
-  alias Haystack.Index
-  alias Haystack.Store.Document
+  alias Haystack.{Index, Store}
+
+  # Public
 
   @doc """
   Insert docs into the store.
+
+    ## Examples
+
+      iex> index = Index.new(:animals)
+      iex> Store.insert(index, [])
+
   """
-  @spec insert(Index.t(), list(Document.t())) :: Index.t()
+  @spec insert(Index.t(), list(Store.Document.t())) :: Index.t()
   def insert(index, docs) do
     Enum.reduce(docs, index, fn doc, index ->
       Enum.reduce(index.attrs.insert, index, fn module, index ->
@@ -20,16 +31,28 @@ defmodule Haystack.Store do
 
   @doc """
   Update docs in the store.
-  """
-  @spec update(Index.t(), list(Document.t())) :: Index.t()
-  def update(index, docs) do
-    index = delete(index, Enum.map(docs, &Map.get(&1, :ref)))
 
-    insert(index, docs)
+    ## Examples
+
+      iex> index = Index.new(:animals)
+      iex> Store.update(index, [])
+
+  """
+  @spec update(Index.t(), list(Store.Document.t())) :: Index.t()
+  def update(index, docs) do
+    index
+    |> delete(Enum.map(docs, &Map.get(&1, :ref)))
+    |> insert(docs)
   end
 
   @doc """
   Delete docs from the store.
+
+    ## Examples
+
+      iex> index = Index.new(:animals)
+      iex> Store.delete(index, [])
+
   """
   @spec delete(Index.t(), list(term)) :: Index.t()
   def delete(index, refs) do

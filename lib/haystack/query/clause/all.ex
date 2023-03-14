@@ -7,7 +7,9 @@ defmodule Haystack.Query.Clause.All do
 
   @behaviour Query.Clause
 
-  @impl true
+  # Public
+
+  @impl Query.Clause
   def evaluate(query, index, statements) do
     responses = Enum.map(statements, & &1.(query, index))
 

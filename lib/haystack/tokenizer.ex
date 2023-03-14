@@ -1,6 +1,13 @@
 defmodule Haystack.Tokenizer do
   @moduledoc """
   A module for tokenizing values.
+
+  This module provides utilities for tokenizing values. The default tokenizer
+  removes anything but alphanumeric characters and extracts the positions of
+  words using a start offset and length.
+
+  There's also a `:full` tokenizer that can be used when the full value should
+  be treated as a single token. For example, a serial code.
   """
 
   alias Haystack.Tokenizer.Token
@@ -8,8 +15,19 @@ defmodule Haystack.Tokenizer do
   @default ~r/([[:alnum:]]+)/
   @full ~r/(.+)/
 
+  # Public
+
   @doc """
   Return the seperator
+
+  ## Examples
+
+    iex> Tokenizer.separator(:default)
+    ~r/([[:alnum:]]+)/
+
+    iex> Tokenizer.separator(:full)
+    ~r/(.+)/
+
   """
   @spec separator(atom) :: Regex.t()
   def separator(:default), do: @default
@@ -20,7 +38,9 @@ defmodule Haystack.Tokenizer do
 
   ## Examples
 
-    iex> Tokenizer.tokenize("Hello, world")
+    iex> tokens = Tokenizer.tokenize("Needle in a Haystack")
+    iex> Enum.map(tokens, & &1.v)
+    ~w{needle in a haystack}
 
   """
   @spec tokenize(term) :: list(Token.t())
@@ -31,7 +51,9 @@ defmodule Haystack.Tokenizer do
 
   ## Examples
 
-    iex> Tokenizer.tokenize("Hello, world", Tokenizer.separator(:default))
+    iex> tokens = Tokenizer.tokenize("Needle in a Haystack", Tokenizer.separator(:default))
+    iex> Enum.map(tokens, & &1.v)
+    ~w{needle in a haystack}
 
   """
   @spec tokenize(term, Regex.t()) :: list(Token.t())
@@ -43,14 +65,16 @@ defmodule Haystack.Tokenizer do
 
     [words(v, r), positions(v, r)]
     |> Enum.zip()
-    |> Enum.map(fn {v, {s, l}} -> Token.new(v, start: s, length: l) end)
+    |> Enum.map(fn {v, {o, l}} -> Token.new(v, offset: o, length: l) end)
   end
 
   # Private
 
+  # Extract the tokenized words from the value.
   defp words(v, r),
     do: Regex.scan(r, v, capture: :first) |> List.flatten()
 
+  # Extract the positions from the value.
   defp positions(v, r),
     do: Regex.scan(r, v, capture: :first, return: :index) |> List.flatten()
 end

@@ -12,12 +12,13 @@ defmodule Haystack.Store.Attr.Docs do
 
   defrecord :docs, field: nil, term: nil
 
-  @impl true
-  def key(opts) do
-    docs(field: Keyword.fetch!(opts, :field), term: Keyword.fetch!(opts, :term))
-  end
+  # Public
 
-  @impl true
+  @impl Store.Attr
+  def key(field: field, term: term),
+    do: docs(field: field, term: term)
+
+  @impl Store.Attr
   def insert(index, %{ref: ref, fields: fields}) do
     storage =
       Enum.reduce(fields, index.storage, fn {k, terms}, storage ->
@@ -34,7 +35,7 @@ defmodule Haystack.Store.Attr.Docs do
     Index.storage(index, storage)
   end
 
-  @impl true
+  @impl Store.Attr
   def delete(index, ref) do
     storage =
       Enum.reduce(index.fields, index.storage, fn {k, _}, storage ->
