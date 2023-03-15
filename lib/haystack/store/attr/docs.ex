@@ -12,7 +12,7 @@ defmodule Haystack.Store.Attr.Docs do
 
   defrecord :docs, field: nil, term: nil
 
-  # Public
+  # Store.Attr
 
   @impl Store.Attr
   def key(field: field, term: term),

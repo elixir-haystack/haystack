@@ -6,7 +6,7 @@ defmodule Haystack.StorageTest do
   doctest Storage
 
   setup do
-    Storage.Memory.new()
+    Storage.Map.new()
     |> Storage.insert(:name, "Haystack")
     |> then(fn storage -> %{storage: storage} end)
   end
@@ -99,12 +99,17 @@ defmodule Haystack.StorageTest do
     end
   end
 
-  describe "dump!/2" do
-    @tag :tmp_dir
-    test "should dump", %{storage: storage, tmp_dir: dir} do
-      :ok = Storage.dump!(storage, Path.join(dir, "storage.haystack"))
+  describe "serialize/1" do
+    test "should serialize", %{storage: storage} do
+      assert is_binary(Storage.serialize(storage))
+    end
+  end
 
-      assert File.exists?(Path.join(dir, "storage.haystack"))
+  describe "deserialize/1" do
+    test "should deserialize", %{storage: storage} do
+      binary = Storage.Map.serialize(storage)
+
+      assert %Storage.Map{} = Storage.deserialize(binary)
     end
   end
 end

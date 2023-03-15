@@ -42,7 +42,7 @@ defmodule Haystack.Index do
       opts
       |> Keyword.put(:name, name)
       |> Keyword.put(:fields, %{})
-      |> Keyword.put_new(:storage, Storage.Memory.new([]))
+      |> Keyword.put_new(:storage, Storage.Map.new([]))
       |> Keyword.put_new(:attrs, Store.Attr.default())
 
     struct(__MODULE__, opts)
@@ -93,7 +93,7 @@ defmodule Haystack.Index do
   ## Examples
 
       iex> index = Index.new(:animals)
-      iex> Index.storage(index, Storage.Memory.new())
+      iex> Index.storage(index, Storage.Map.new())
 
   """
   @spec storage(t, struct) :: t

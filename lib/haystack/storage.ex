@@ -77,14 +77,9 @@ defmodule Haystack.Storage do
   @callback count(t) :: integer
 
   @doc """
-  Dump the storage to the filesystem.
+  Serialize the storage.
   """
-  @callback dump!(t, Path.t()) :: :ok
-
-  @doc """
-  Load the storage from the filesystem.
-  """
-  @callback load!(Path.t()) :: t
+  @callback serialize(t) :: binary
 
   # Public
 
@@ -93,11 +88,11 @@ defmodule Haystack.Storage do
 
   ## Examples
 
-      iex> storage = Storage.Memory.new()
+      iex> storage = Storage.Map.new()
       iex> Storage.fetch(storage, :name)
       {:error, %Storage.NotFoundError{message: "Not found"}}
 
-      iex> storage = Storage.Memory.new()
+      iex> storage = Storage.Map.new()
       iex> storage = Storage.insert(storage, :name, "Haystack")
       iex> Storage.fetch(storage, :name)
       {:ok, "Haystack"}
@@ -112,7 +107,7 @@ defmodule Haystack.Storage do
 
   ## Examples
 
-      iex> storage = Storage.Memory.new()
+      iex> storage = Storage.Map.new()
       iex> storage = Storage.insert(storage, :name, "Haystack")
       iex> Storage.fetch!(storage, :name)
       "Haystack"
@@ -127,7 +122,7 @@ defmodule Haystack.Storage do
 
   ## Examples
 
-      iex> storage = Storage.Memory.new()
+      iex> storage = Storage.Map.new()
       iex> storage = Storage.insert(storage, :name, "Haystack")
       iex> Storage.fetch!(storage, :name)
       "Haystack"
@@ -142,11 +137,11 @@ defmodule Haystack.Storage do
 
   ## Examples
 
-      iex> storage = Storage.Memory.new()
+      iex> storage = Storage.Map.new()
       iex> Storage.update(storage, :name, &String.upcase/1)
       {:error, %Storage.NotFoundError{message: "Not found"}}
 
-      iex> storage = Storage.Memory.new()
+      iex> storage = Storage.Map.new()
       iex> storage = Storage.insert(storage, :name, "Haystack")
       iex> {:ok, storage} = Storage.update(storage, :name, &String.upcase/1)
       iex> Storage.fetch!(storage, :name)
@@ -162,7 +157,7 @@ defmodule Haystack.Storage do
 
   ## Examples
 
-      iex> storage = Storage.Memory.new()
+      iex> storage = Storage.Map.new()
       iex> storage = Storage.insert(storage, :name, "Haystack")
       iex> storage = Storage.update!(storage, :name, &String.upcase/1)
       iex> Storage.fetch!(storage, :name)
@@ -178,12 +173,12 @@ defmodule Haystack.Storage do
 
   ## Examples
 
-      iex> storage = Storage.Memory.new()
+      iex> storage = Storage.Map.new()
       iex> storage = Storage.upsert(storage, :name, "HAYSTACK", &String.upcase/1)
       iex> Storage.fetch!(storage, :name)
       "HAYSTACK"
 
-      iex> storage = Storage.Memory.new()
+      iex> storage = Storage.Map.new()
       iex> storage = Storage.insert(storage, :name, "Haystack")
       iex> storage = Storage.upsert(storage, :name, "HAYSTACK", &String.upcase/1)
       iex> Storage.fetch!(storage, :name)
@@ -199,12 +194,12 @@ defmodule Haystack.Storage do
 
   ## Examples
 
-      iex> storage = Storage.Memory.new()
+      iex> storage = Storage.Map.new()
       iex> storage = Storage.delete(storage, :name)
       iex> Storage.fetch(storage, :name)
       {:error, %Storage.NotFoundError{message: "Not found"}}
 
-      iex> storage = Storage.Memory.new()
+      iex> storage = Storage.Map.new()
       iex> storage = Storage.insert(storage, :name, "Haystack")
       iex> storage = Storage.delete(storage, :name)
       iex> Storage.fetch(storage, :name)
@@ -220,7 +215,7 @@ defmodule Haystack.Storage do
 
   ## Examples
 
-      iex> storage = Storage.Memory.new()
+      iex> storage = Storage.Map.new()
       iex> storage = Storage.insert(storage, :name, "Haystack")
       iex> Storage.count(storage)
       1
@@ -231,11 +226,30 @@ defmodule Haystack.Storage do
     do: delegate(storage, :count, [])
 
   @doc """
-  Dump the storage to the filesystem.
+  Serialize the storage.
+
+  ## Examples
+
+      iex> storage = Storage.Map.new()
+      iex> Storage.serialize(storage)
+
   """
-  @spec dump!(t, Path.t()) :: :ok
-  def dump!(storage, path),
-    do: delegate(storage, :dump!, [path])
+  @spec serialize(t) :: binary
+  def serialize(storage),
+    do: delegate(storage, :serialize, [])
+
+  @doc """
+  Deserialize the storage.
+
+  ## Examples
+
+      iex> binary = Storage.serialize(Storage.Map.new())
+      iex> Storage.deserialize(binary)
+
+  """
+  @spec deserialize(binary) :: t
+  def deserialize(binary),
+    do: :erlang.binary_to_term(binary)
 
   # Private
 
