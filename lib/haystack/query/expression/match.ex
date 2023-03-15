@@ -9,7 +9,7 @@ defmodule Haystack.Query.Expression.Match do
 
   @behaviour Query.Expression
 
-  # Query.Expression
+  # Behaviour: Query.Expression
 
   @impl Query.Expression
   def evaluate(index, %Query.Expression{k: :match} = exp) do

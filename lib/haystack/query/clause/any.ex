@@ -7,7 +7,7 @@ defmodule Haystack.Query.Clause.Any do
 
   @behaviour Query.Clause
 
-  # Query.Clause
+  # Behaviour: Query.Clause
 
   @impl Query.Clause
   def evaluate(query, index, statements) do

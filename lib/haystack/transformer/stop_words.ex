@@ -10,7 +10,7 @@ defmodule Haystack.Transformer.StopWords do
          |> String.trim()
          |> String.split("\n")
 
-  # Haystack.Transformer
+  # Behaviour: Haystack.Transformer
 
   @doc """
   Remove stop words from a list of tokens.

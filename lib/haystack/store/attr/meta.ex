@@ -12,7 +12,7 @@ defmodule Haystack.Store.Attr.Meta do
 
   defrecord :meta, ref: nil, field: nil, term: nil
 
-  # Store.Attr
+  # Behaviour: Store.Attr
 
   @impl Store.Attr
   def key(ref: ref, field: field, term: term),

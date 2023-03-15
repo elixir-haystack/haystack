@@ -11,7 +11,7 @@ defmodule Haystack.Store.Attr.Global do
 
   defrecord :global, []
 
-  # Store.Attr
+  # Behaviour: Store.Attr
 
   @impl Store.Attr
   def key(_opts \\ []), do: global()

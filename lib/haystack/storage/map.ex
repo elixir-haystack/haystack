@@ -15,7 +15,7 @@ defmodule Haystack.Storage.Map do
 
   defstruct @enforce_keys
 
-  # Haystack.Storage
+  # Behaviour: Haystack.Storage
 
   @doc """
   Create a new storage.

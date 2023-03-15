@@ -5,7 +5,7 @@ defmodule Haystack.Transformer.Stemmer do
 
   @behaviour Haystack.Transformer
 
-  # Haystack.Transformer
+  # Behaviour: Haystack.Transformer
 
   @doc """
   Apply a stemming transformation on a list of tokens.
