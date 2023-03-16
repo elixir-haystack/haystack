@@ -122,7 +122,7 @@ defmodule Haystack.Storage.ETSTest do
       storage = Storage.ETS.insert(storage, :name, "Haystack")
       storage = Storage.ETS.serialize(storage) |> Storage.deserialize()
 
-      :ok = stop_supervised!(Storage.ETS)
+      :ok = stop_supervised!({Storage.ETS, storage.table})
 
       start_supervised!({Storage.ETS, storage: storage})
 

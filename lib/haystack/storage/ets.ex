@@ -122,6 +122,12 @@ defmodule Haystack.Storage.ETS do
 
   # Behaviour: GenServer
 
+  def child_spec(opts) do
+    storage = Keyword.fetch!(opts, :storage)
+
+    %{id: {__MODULE__, storage.table}, start: {__MODULE__, :start_link, [opts]}}
+  end
+
   def start_link(opts) do
     {storage, opts} = Keyword.pop!(opts, :storage)
 
