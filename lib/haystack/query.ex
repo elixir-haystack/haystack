@@ -77,6 +77,7 @@ defmodule Haystack.Query do
 
       %{ref: ref, score: score, fields: Map.new(fields)}
     end)
+    |> Enum.sort_by(& &1.score, :desc)
   end
 
   @doc """
