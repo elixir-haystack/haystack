@@ -1,10 +1,10 @@
-defmodule Haystack.Store.Attr.MetaTest do
+defmodule Haystack.Index.Attr.MetaTest do
   use ExUnit.Case, async: true
 
   import Haystack.Fixture
 
   alias Haystack.Storage
-  alias Haystack.Store.Attr.{Meta, Terms}
+  alias Haystack.Index.Attr.{Meta, Terms}
 
   setup do
     fixture(:animals)

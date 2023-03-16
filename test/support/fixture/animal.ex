@@ -5,7 +5,7 @@ defmodule Haystack.Fixture.Animal do
     key: :animals,
     from: Application.app_dir(:haystack, "/priv/haystack/fixtures/animals/*.json")
 
-  alias Haystack.{Index, Store}
+  alias Haystack.Index
 
   def data,
     do: @animals
@@ -13,7 +13,7 @@ defmodule Haystack.Fixture.Animal do
   def fixture do
     data = data()
     index = index()
-    docs = Enum.map(data, &Store.Document.new(index, &1))
+    docs = Enum.map(data, &Index.Document.new(index, &1))
 
     %{data: data, docs: docs, index: index}
   end

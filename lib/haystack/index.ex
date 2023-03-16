@@ -6,8 +6,7 @@ defmodule Haystack.Index do
   update, delete, or query the storage.
   """
 
-  alias __MODULE__
-  alias Haystack.{Query, Storage, Store, Tokenizer, Transformer}
+  alias Haystack.{Index, Query, Storage, Tokenizer, Transformer}
 
   # Types
 
@@ -43,7 +42,7 @@ defmodule Haystack.Index do
       |> Keyword.put(:name, name)
       |> Keyword.put(:fields, %{})
       |> Keyword.put_new(:storage, Storage.Map.new([]))
-      |> Keyword.put_new(:attrs, Store.Attr.default())
+      |> Keyword.put_new(:attrs, Index.Attr.default())
 
     struct(__MODULE__, opts)
   end
@@ -111,9 +110,13 @@ defmodule Haystack.Index do
   """
   @spec add(t, list(map)) :: t
   def add(index, data) do
-    data
-    |> Enum.map(&Store.Document.new(index, &1))
-    |> then(&Store.insert(index, &1))
+    docs = Enum.map(data, &Index.Document.new(index, &1))
+
+    Enum.reduce(docs, index, fn doc, index ->
+      Enum.reduce(index.attrs.insert, index, fn module, index ->
+        module.insert(index, doc)
+      end)
+    end)
   end
 
   @doc """
@@ -127,9 +130,10 @@ defmodule Haystack.Index do
   """
   @spec update(t, list(map)) :: t
   def update(index, data) do
-    data
-    |> Enum.map(&Store.Document.new(index, &1))
-    |> then(&Store.update(index, &1))
+    docs = Enum.map(data, &Index.Document.new(index, &1))
+    refs = Enum.map(docs, &Map.get(&1, :ref))
+
+    index |> delete(refs) |> add(data)
   end
 
   @doc """
@@ -141,9 +145,14 @@ defmodule Haystack.Index do
       iex> Index.delete(index, [])
 
   """
-  @spec delete(t, list(map)) :: t
-  def delete(index, refs),
-    do: Store.delete(index, refs)
+  @spec delete(t, list(String.t())) :: t
+  def delete(index, refs) do
+    Enum.reduce(refs, index, fn ref, index ->
+      Enum.reduce(index.attrs.delete, index, fn module, index ->
+        module.delete(index, ref)
+      end)
+    end)
+  end
 
   @doc """
   Search the index.

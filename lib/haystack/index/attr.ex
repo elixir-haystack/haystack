@@ -1,15 +1,16 @@
-defmodule Haystack.Store.Attr do
+defmodule Haystack.Index.Attr do
   @moduledoc """
   A behaviour for defining a store attr.
   """
 
-  alias Haystack.{Index, Store}
+  alias Haystack.Index
 
   @attrs [
-    Store.Attr.Global,
-    Store.Attr.Terms,
-    Store.Attr.Docs,
-    Store.Attr.Meta
+    Index.Attr.Global,
+    Index.Attr.Terms,
+    Index.Attr.Docs,
+    Index.Attr.IDF,
+    Index.Attr.Meta
   ]
 
   # Types
@@ -26,12 +27,12 @@ defmodule Haystack.Store.Attr do
   @doc """
   Insert an attr.
   """
-  @callback insert(Index.t(), Store.Document.t()) :: Index.t()
+  @callback insert(Index.t(), Index.Document.t()) :: Index.t()
 
   @doc """
   Delete an attr.
   """
-  @callback delete(Index.t(), Store.Document.t()) :: Index.t()
+  @callback delete(Index.t(), Index.Document.t()) :: Index.t()
 
   # Public
 
@@ -39,9 +40,5 @@ defmodule Haystack.Store.Attr do
   Return the default attrs.
   """
   @spec default :: %{insert: list(module), delete: list(module)}
-  def default, do: %{insert: attrs(), delete: Enum.reverse(attrs())}
-
-  # Private
-
-  defp attrs, do: @attrs
+  def default, do: %{insert: @attrs, delete: Enum.reverse(@attrs)}
 end

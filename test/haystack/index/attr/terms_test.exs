@@ -1,10 +1,10 @@
-defmodule Haystack.Store.Attr.TermsTest do
+defmodule Haystack.Index.Attr.TermsTest do
   use ExUnit.Case, async: true
 
   import Haystack.Fixture
 
+  alias Haystack.Index.Attr.Terms
   alias Haystack.Storage
-  alias Haystack.Store.Attr.Terms
 
   setup do
     fixture(:animals)

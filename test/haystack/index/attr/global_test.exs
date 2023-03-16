@@ -1,10 +1,10 @@
-defmodule Haystack.Store.Attr.GlobalTest do
+defmodule Haystack.Index.Attr.GlobalTest do
   use ExUnit.Case, async: true
 
   import Haystack.Fixture
 
+  alias Haystack.Index.Attr.Global
   alias Haystack.Storage
-  alias Haystack.Store.Attr.Global
 
   setup do
     fixture(:animals)

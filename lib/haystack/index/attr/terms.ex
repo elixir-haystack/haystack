@@ -1,27 +1,27 @@
-defmodule Haystack.Store.Attr.Terms do
+defmodule Haystack.Index.Attr.Terms do
   @moduledoc """
   A module for storing terms.
   """
 
   import Record
 
-  alias Haystack.{Index, Storage, Store}
+  alias Haystack.{Index, Storage}
 
-  @behaviour Store.Attr
+  @behaviour Index.Attr
 
   defrecord :terms, ref: nil, field: nil
 
-  # Behaviour: Store.Attr
+  # Behaviour: Index.Attr
 
-  @impl Store.Attr
+  @impl Index.Attr
   def key(ref: ref, field: field),
     do: terms(ref: ref, field: field)
 
-  @impl Store.Attr
+  @impl Index.Attr
   def insert(index, %{ref: ref, fields: fields}) do
     storage =
-      Enum.reduce(fields, index.storage, fn {k, terms}, storage ->
-        k = key(ref: ref, field: k)
+      Enum.reduce(fields, index.storage, fn {field, terms}, storage ->
+        k = key(ref: ref, field: field)
         v = Enum.map(terms, &Map.get(&1, :v))
         Storage.insert(storage, k, v)
       end)
@@ -29,7 +29,7 @@ defmodule Haystack.Store.Attr.Terms do
     Index.storage(index, storage)
   end
 
-  @impl Store.Attr
+  @impl Index.Attr
   def delete(index, ref) do
     storage =
       Enum.reduce(index.fields, index.storage, fn {k, _}, storage ->

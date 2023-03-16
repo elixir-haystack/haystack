@@ -5,7 +5,7 @@ defmodule Haystack.Query.Expression.Match do
 
   alias Haystack.Query
   alias Haystack.Storage
-  alias Haystack.Store.Attr.{Docs, Meta}
+  alias Haystack.Index.Attr.{Docs, Meta}
 
   @behaviour Query.Expression
 
@@ -13,7 +13,7 @@ defmodule Haystack.Query.Expression.Match do
 
   @impl Query.Expression
   def evaluate(index, %Query.Expression{k: :match} = exp) do
-    with {:ok, {idf, refs}} <- refs(index, exp) do
+    with {:ok, refs} <- refs(index, exp) do
       Enum.map(refs, fn ref ->
         key = Meta.key(ref: ref, field: exp.field, term: exp.term)
 
@@ -23,7 +23,7 @@ defmodule Haystack.Query.Expression.Match do
           ref: ref,
           field: exp.field,
           positions: positions,
-          score: idf * tf,
+          score: tf,
           term: exp.term
         }
       end)

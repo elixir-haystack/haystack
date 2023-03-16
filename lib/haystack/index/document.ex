@@ -1,4 +1,4 @@
-defmodule Haystack.Store.Document do
+defmodule Haystack.Index.Document do
   @moduledoc """
   A module for preparing documents to be stored.
   """
@@ -75,7 +75,7 @@ defmodule Haystack.Store.Document do
           %{}
           |> Map.put(:v, v)
           |> Map.put(:positions, Enum.map(group, &{&1.offset, &1.length}))
-          |> Map.put(:tf, Float.round(Map.get(counts, v) / Enum.count(tokens), 2))
+          |> Map.put(:tf, Map.get(counts, v) / Enum.count(tokens))
         end)
 
       {k, values}

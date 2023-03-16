@@ -7,8 +7,8 @@ defmodule Haystack.Transformer do
   stages for stemming and removing stop words.
   """
 
-  alias __MODULE__
   alias Haystack.Tokenizer.Token
+  alias Haystack.Transformer
 
   @default [
     Transformer.Stemmer,

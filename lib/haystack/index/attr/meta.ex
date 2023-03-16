@@ -1,24 +1,24 @@
-defmodule Haystack.Store.Attr.Meta do
+defmodule Haystack.Index.Attr.Meta do
   @moduledoc """
   A module for storing the meta for a field, term.
   """
 
   import Record
 
-  alias Haystack.{Index, Storage, Store}
-  alias Haystack.Store.Attr
+  alias Haystack.{Index, Storage}
+  alias Haystack.Index.Attr
 
-  @behaviour Store.Attr
+  @behaviour Index.Attr
 
   defrecord :meta, ref: nil, field: nil, term: nil
 
-  # Behaviour: Store.Attr
+  # Behaviour: Index.Attr
 
-  @impl Store.Attr
+  @impl Index.Attr
   def key(ref: ref, field: field, term: term),
     do: meta(ref: ref, field: field, term: term)
 
-  @impl Store.Attr
+  @impl Index.Attr
   def insert(index, %{ref: ref, fields: fields}) do
     storage =
       Enum.reduce(fields, index.storage, fn {field, terms}, storage ->
@@ -31,7 +31,7 @@ defmodule Haystack.Store.Attr.Meta do
     Index.storage(index, storage)
   end
 
-  @impl Store.Attr
+  @impl Index.Attr
   def delete(index, ref) do
     storage =
       Enum.reduce(index.fields, index.storage, fn {k, _}, storage ->
