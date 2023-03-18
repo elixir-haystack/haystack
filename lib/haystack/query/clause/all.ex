@@ -13,14 +13,16 @@ defmodule Haystack.Query.Clause.All do
   def evaluate(query, index, statements) do
     responses = Enum.map(statements, & &1.(query, index))
 
-    [result | results] =
+    results =
       Enum.map(responses, fn results ->
         results
         |> Enum.map(&Map.get(&1, :ref))
         |> MapSet.new()
       end)
 
-    refs = Enum.reduce(results, result, &MapSet.intersection(&2, &1))
+    {acc, results} = List.pop_at(results, 0, MapSet.new())
+
+    refs = Enum.reduce(results, acc, &MapSet.intersection(&2, &1))
 
     responses
     |> List.flatten()
