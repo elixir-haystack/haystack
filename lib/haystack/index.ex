@@ -166,7 +166,7 @@ defmodule Haystack.Index do
   """
   @spec search(t, String.t(), Keyword.t()) :: list(map)
   def search(index, v, opts \\ []) do
-    type = Keyword.get(opts, :query, :match_all)
+    type = Keyword.get(opts, :query, :match_any)
     tokens = Tokenizer.tokenize(v)
     tokens = Transformer.pipeline(tokens, Transformer.default())
 
