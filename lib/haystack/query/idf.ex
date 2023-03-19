@@ -14,7 +14,7 @@ defmodule Haystack.Query.IDF do
     total = Enum.count(Storage.fetch!(storage, Attr.Global.key()))
 
     results
-    |> Enum.group_by(& {&1.field, &1.term})
+    |> Enum.group_by(&{&1.field, &1.term})
     |> Enum.flat_map(fn {{field, term}, results} ->
       count = Enum.count(Storage.fetch!(storage, Attr.Docs.key(field: field, term: term)))
       idf = :math.log10(total / count)
