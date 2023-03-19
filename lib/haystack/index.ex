@@ -120,23 +120,6 @@ defmodule Haystack.Index do
   end
 
   @doc """
-  Update documents in the index.
-
-  ## Examples
-
-      iex> index = Index.new(:animals)
-      iex> Index.update(index, [])
-
-  """
-  @spec update(t, list(map)) :: t
-  def update(index, data) do
-    docs = Enum.map(data, &Index.Document.new(index, &1))
-    refs = Enum.map(docs, &Map.get(&1, :ref))
-
-    index |> delete(refs) |> add(data)
-  end
-
-  @doc """
   Delete documents in the index.
 
   ## Examples
@@ -145,11 +128,13 @@ defmodule Haystack.Index do
       iex> Index.delete(index, [])
 
   """
-  @spec delete(t, list(String.t())) :: t
-  def delete(index, refs) do
-    Enum.reduce(refs, index, fn ref, index ->
+  @spec delete(t, list(map)) :: t
+  def delete(index, data) do
+    docs = Enum.map(data, &Index.Document.new(index, &1))
+
+    Enum.reduce(docs, index, fn doc, index ->
       Enum.reduce(index.attrs.delete, index, fn module, index ->
-        module.delete(index, ref)
+        module.delete(index, doc)
       end)
     end)
   end

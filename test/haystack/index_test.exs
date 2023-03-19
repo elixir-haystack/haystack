@@ -45,24 +45,10 @@ defmodule Haystack.IndexTest do
     end
   end
 
-  describe "update/2" do
-    test "should update", %{index: index, data: [data | rest]} do
-      index = Index.add(index, [data | rest])
-
-      assert Enum.empty?(Index.search(index, "otter", query: :match_any))
-
-      data = Map.put(data, :name, "otter")
-
-      index = Index.update(index, [data])
-
-      assert Enum.count(Index.search(index, "otter", query: :match_any)) == 1
-    end
-  end
-
   describe "delete/2" do
     test "should delete", %{index: index, data: data} do
       index = Index.add(index, data)
-      index = Index.delete(index, Enum.map(data, & &1.id))
+      index = Index.delete(index, Enum.map(data, & &1))
 
       assert Storage.count(index.storage) == 0
     end

@@ -4,7 +4,7 @@ defmodule Haystack.Index.Attr.DocsTest do
   import Haystack.Fixture
 
   alias Haystack.Storage
-  alias Haystack.Index.Attr.{Docs, Global, Terms}
+  alias Haystack.Index.Attr.{Docs, Global}
 
   setup do
     fixture(:animals)
@@ -30,9 +30,8 @@ defmodule Haystack.Index.Attr.DocsTest do
   describe "delete/2" do
     test "should delete", %{index: index, docs: docs} do
       index = Enum.reduce(docs, index, &Global.insert(&2, &1))
-      index = Enum.reduce(docs, index, &Terms.insert(&2, &1))
       index = Enum.reduce(docs, index, &Docs.insert(&2, &1))
-      index = Enum.reduce(docs, index, &Docs.delete(&2, &1.ref))
+      index = Enum.reduce(docs, index, &Docs.delete(&2, &1))
 
       key = Docs.key(field: "name", term: "red")
 

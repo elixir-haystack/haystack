@@ -27,7 +27,7 @@ defmodule Haystack.Index.Attr.GlobalTest do
   describe "delete/2" do
     test "should delete", %{index: index, docs: docs} do
       index = Enum.reduce(docs, index, &Global.insert(&2, &1))
-      index = Global.delete(index, "1")
+      index = Global.delete(index, hd(docs))
 
       assert ~w{2 3 4 5 6 7 8} == Storage.fetch!(index.storage, Global.key())
     end

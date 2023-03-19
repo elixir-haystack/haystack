@@ -24,7 +24,7 @@ defmodule Haystack.Index.Attr.Global do
   end
 
   @impl Index.Attr
-  def delete(index, ref) do
+  def delete(index, %{ref: ref}) do
     storage = Storage.upsert(index.storage, key(), ref, &(&1 -- [ref]))
 
     storage =

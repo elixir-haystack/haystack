@@ -35,15 +35,13 @@ defmodule Haystack.Index.Attr.IDF do
   end
 
   @impl Index.Attr
-  def delete(index, ref) do
+  def delete(index, %{fields: fields}) do
     storage =
-      Enum.reduce(index.fields, index.storage, fn {field, _}, storage ->
-        terms = Storage.fetch!(storage, Attr.Terms.key(ref: ref, field: field))
-
-        Enum.reduce(terms, storage, fn term, storage ->
-          k = key(field: field, term: term)
+      Enum.reduce(fields, index.storage, fn {field, terms}, storage ->
+        Enum.reduce(terms, storage, fn %{v: v}, storage ->
+          k = key(field: field, term: v)
           total = Enum.count(Storage.fetch!(storage, Attr.Global.key())) - 1
-          count = Enum.count(Storage.fetch!(storage, Attr.Docs.key(field: field, term: term))) - 1
+          count = Enum.count(Storage.fetch!(storage, Attr.Docs.key(field: field, term: v))) - 1
 
           if count == 0 do
             Storage.delete(storage, k)

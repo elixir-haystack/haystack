@@ -6,7 +6,6 @@ defmodule Haystack.Index.Attr.Docs do
   import Record
 
   alias Haystack.{Index, Storage}
-  alias Haystack.Index.Attr
 
   @behaviour Index.Attr
 
@@ -32,13 +31,11 @@ defmodule Haystack.Index.Attr.Docs do
   end
 
   @impl Index.Attr
-  def delete(index, ref) do
+  def delete(index, %{ref: ref, fields: fields}) do
     storage =
-      Enum.reduce(index.fields, index.storage, fn {field, _}, storage ->
-        terms = Storage.fetch!(storage, Attr.Terms.key(ref: ref, field: field))
-
+      Enum.reduce(fields, index.storage, fn {field, terms}, storage ->
         Enum.reduce(terms, storage, fn term, storage ->
-          k = key(field: field, term: term)
+          k = key(field: field, term: term.v)
 
           case Storage.fetch!(storage, k) do
             [^ref] -> Storage.delete(storage, k)

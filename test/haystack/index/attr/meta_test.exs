@@ -3,8 +3,8 @@ defmodule Haystack.Index.Attr.MetaTest do
 
   import Haystack.Fixture
 
+  alias Haystack.Index.Attr.Meta
   alias Haystack.Storage
-  alias Haystack.Index.Attr.{Meta, Terms}
 
   setup do
     fixture(:animals)
@@ -30,9 +30,8 @@ defmodule Haystack.Index.Attr.MetaTest do
 
   describe "delete/2" do
     test "should delete", %{index: index, docs: docs} do
-      index = Enum.reduce(docs, index, &Terms.insert(&2, &1))
       index = Enum.reduce(docs, index, &Meta.insert(&2, &1))
-      index = Enum.reduce(docs, index, &Meta.delete(&2, &1.ref))
+      index = Enum.reduce(docs, index, &Meta.delete(&2, &1))
 
       key = Meta.key(ref: "1", field: "name", term: "red")
 
