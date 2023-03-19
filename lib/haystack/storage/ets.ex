@@ -136,7 +136,7 @@ defmodule Haystack.Storage.ETS do
 
   @impl true
   def init(storage) do
-    :ets.new(storage.table, [:set, :protected, :named_table])
+    :ets.new(storage.table, [:set, :protected, :named_table, :compressed])
 
     {data, storage} = Map.get_and_update!(storage, :data, &{&1, []})
 
