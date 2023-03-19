@@ -8,7 +8,6 @@ defmodule Haystack.Index.Attr do
   @attrs [
     {Index.Attr.Global, []},
     {Index.Attr.Docs, []},
-    {Index.Attr.IDF, []},
     {Index.Attr.Meta, include: [:tf]}
   ]
 

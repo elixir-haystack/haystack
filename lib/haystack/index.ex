@@ -141,13 +141,6 @@ defmodule Haystack.Index do
 
   @doc """
   Search the index.
-
-    ## Examples
-
-      iex> index = Index.new(:animals)
-      iex> index = Index.field(index, Index.Field.new("name"))
-      iex> Index.search(index, "red panda")
-
   """
   @spec search(t, String.t(), Keyword.t()) :: list(map)
   def search(index, v, opts \\ []) do

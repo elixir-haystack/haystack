@@ -64,6 +64,7 @@ defmodule Haystack.Query do
     responses = statement.(query, index)
 
     responses
+    |> Query.IDF.calculate(index.storage)
     |> Enum.group_by(& &1.ref)
     |> Enum.map(fn {ref, fields} ->
       score = Enum.reduce(fields, 0, &(&1.score + &2))
