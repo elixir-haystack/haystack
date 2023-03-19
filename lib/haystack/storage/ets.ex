@@ -12,10 +12,11 @@ defmodule Haystack.Storage.ETS do
   @type t :: %__MODULE__{
           name: GenServer.name(),
           table: atom,
-          data: list({term, term})
+          data: list({term, term}),
+          load: nil | fun()
         }
 
-  @enforce_keys ~w{name table data}a
+  @enforce_keys ~w{name table data load}a
 
   defstruct @enforce_keys
 
@@ -29,6 +30,7 @@ defmodule Haystack.Storage.ETS do
     opts =
       opts
       |> Keyword.put(:data, [])
+      |> Keyword.put_new(:load, nil)
       |> Keyword.put_new(:name, :haystack)
       |> Keyword.put_new(:table, :haystack)
 
@@ -138,9 +140,7 @@ defmodule Haystack.Storage.ETS do
   def init(storage) do
     :ets.new(storage.table, [:set, :protected, :named_table, :compressed])
 
-    {data, storage} = Map.get_and_update!(storage, :data, &{&1, []})
-
-    {:ok, storage, {:continue, data}}
+    {:ok, storage, {:continue, :ok}}
   end
 
   @impl true
@@ -163,11 +163,14 @@ defmodule Haystack.Storage.ETS do
   end
 
   @impl true
-  def handle_continue([], storage), do: {:noreply, storage}
+  def handle_continue(:ok, %{load: nil} = storage), do: {:noreply, storage}
+  def handle_continue(:ok, storage) do
+    data = storage.load.()
 
-  def handle_continue(data, storage) do
     Enum.each(data, &:ets.insert(storage.table, &1))
 
-    {:noreply, storage}
+    :erlang.garbage_collect(self())
+
+    {:noreply, %{storage | load: nil}}
   end
 end

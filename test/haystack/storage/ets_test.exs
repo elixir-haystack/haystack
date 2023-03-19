@@ -117,12 +117,19 @@ defmodule Haystack.Storage.ETSTest do
     end
   end
 
+  defmodule Restore do
+    def load do
+      [name: "Haystack"]
+    end
+  end
+
   describe "misc" do
     test "should restore", %{storage: storage} do
       storage = Storage.ETS.insert(storage, :name, "Haystack")
-      storage = Storage.ETS.serialize(storage) |> Storage.deserialize()
 
       :ok = stop_supervised!({Storage.ETS, storage.table})
+
+      storage = %{storage | load: &Restore.load/0}
 
       start_supervised!({Storage.ETS, storage: storage})
 
