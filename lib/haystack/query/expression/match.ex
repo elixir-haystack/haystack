@@ -17,15 +17,13 @@ defmodule Haystack.Query.Expression.Match do
       Enum.map(refs, fn ref ->
         key = Meta.key(ref: ref, field: exp.field, term: exp.term)
 
-        %{tf: tf, positions: positions} = Storage.fetch!(index.storage, key)
+        meta = Storage.fetch!(index.storage, key)
 
-        %{
-          ref: ref,
-          field: exp.field,
-          positions: positions,
-          score: tf,
-          term: exp.term
-        }
+        meta
+        |> Map.put(:ref, ref)
+        |> Map.put(:score, Map.get(meta, :tf, 0))
+        |> Map.put(:field, exp.field)
+        |> Map.put(:term, exp.term)
       end)
     end
   end

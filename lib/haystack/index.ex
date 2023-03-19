@@ -10,7 +10,7 @@ defmodule Haystack.Index do
 
   # Types
 
-  @type attrs :: %{insert: list(module), delete: list(module)}
+  @type attrs :: %{insert: list({module, Keyword.t()}), delete: list({module, Keyword.t()})}
   @type fields :: %{Index.Field.k() => Index.Field.t()}
   @type opts :: Keyword.t()
   @type t :: %__MODULE__{
@@ -113,8 +113,8 @@ defmodule Haystack.Index do
     docs = Enum.map(data, &Index.Document.new(index, &1))
 
     Enum.reduce(docs, index, fn doc, index ->
-      Enum.reduce(index.attrs.insert, index, fn module, index ->
-        module.insert(index, doc)
+      Enum.reduce(index.attrs.insert, index, fn {module, opts}, index ->
+        module.insert(index, doc, opts)
       end)
     end)
   end
@@ -133,8 +133,8 @@ defmodule Haystack.Index do
     docs = Enum.map(data, &Index.Document.new(index, &1))
 
     Enum.reduce(docs, index, fn doc, index ->
-      Enum.reduce(index.attrs.delete, index, fn module, index ->
-        module.delete(index, doc)
+      Enum.reduce(index.attrs.delete, index, fn {module, opts}, index ->
+        module.delete(index, doc, opts)
       end)
     end)
   end

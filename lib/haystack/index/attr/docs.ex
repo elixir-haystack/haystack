@@ -18,7 +18,7 @@ defmodule Haystack.Index.Attr.Docs do
     do: docs(field: field, term: term)
 
   @impl Index.Attr
-  def insert(index, %{ref: ref, fields: fields}) do
+  def insert(index, %{ref: ref, fields: fields}, _opts \\ []) do
     storage =
       Enum.reduce(fields, index.storage, fn {field, terms}, storage ->
         Enum.reduce(terms, storage, fn term, storage ->
@@ -31,7 +31,7 @@ defmodule Haystack.Index.Attr.Docs do
   end
 
   @impl Index.Attr
-  def delete(index, %{ref: ref, fields: fields}) do
+  def delete(index, %{ref: ref, fields: fields}, _opts \\ []) do
     storage =
       Enum.reduce(fields, index.storage, fn {field, terms}, storage ->
         Enum.reduce(terms, storage, fn term, storage ->

@@ -18,12 +18,14 @@ defmodule Haystack.Index.Attr.Meta do
     do: meta(ref: ref, field: field, term: term)
 
   @impl Index.Attr
-  def insert(index, %{ref: ref, fields: fields}) do
+  def insert(index, %{ref: ref, fields: fields}, opts \\ []) do
+    include = Keyword.get(opts, :include, [:tf])
+
     storage =
       Enum.reduce(fields, index.storage, fn {field, terms}, storage ->
         Enum.reduce(terms, storage, fn term, storage ->
           k = key(ref: ref, field: field, term: term.v)
-          Storage.insert(storage, k, Map.take(term, [:positions, :tf]))
+          Storage.insert(storage, k, Map.take(term, include))
         end)
       end)
 
@@ -31,7 +33,7 @@ defmodule Haystack.Index.Attr.Meta do
   end
 
   @impl Index.Attr
-  def delete(index, %{ref: ref, fields: fields}) do
+  def delete(index, %{ref: ref, fields: fields}, _opts \\ []) do
     storage =
       Enum.reduce(fields, index.storage, fn {field, terms}, storage ->
         Enum.reduce(terms, storage, fn term, storage ->

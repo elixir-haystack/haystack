@@ -20,7 +20,9 @@ defmodule Haystack.Index.Attr.MetaTest do
 
   describe "insert/2" do
     test "should insert", %{index: index, docs: docs} do
-      %{storage: storage} = Enum.reduce(docs, index, &Meta.insert(&2, &1))
+      opts = [include: [:tf, :positions]]
+
+      %{storage: storage} = Enum.reduce(docs, index, &Meta.insert(&2, &1, opts))
 
       key = Meta.key(ref: "1", field: "name", term: "red")
 

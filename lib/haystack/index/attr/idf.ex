@@ -19,7 +19,7 @@ defmodule Haystack.Index.Attr.IDF do
     do: idf(field: field, term: term)
 
   @impl Index.Attr
-  def insert(index, %{fields: fields}) do
+  def insert(index, %{fields: fields}, _opts \\ []) do
     storage =
       Enum.reduce(fields, index.storage, fn {field, terms}, storage ->
         Enum.reduce(terms, storage, fn %{v: v}, storage ->
@@ -35,7 +35,7 @@ defmodule Haystack.Index.Attr.IDF do
   end
 
   @impl Index.Attr
-  def delete(index, %{fields: fields}) do
+  def delete(index, %{fields: fields}, _opts \\ []) do
     storage =
       Enum.reduce(fields, index.storage, fn {field, terms}, storage ->
         Enum.reduce(terms, storage, fn %{v: v}, storage ->

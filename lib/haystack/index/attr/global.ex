@@ -17,14 +17,14 @@ defmodule Haystack.Index.Attr.Global do
   def key(_opts \\ []), do: global()
 
   @impl Index.Attr
-  def insert(index, %{ref: ref}) do
+  def insert(index, %{ref: ref}, _opts \\ []) do
     storage = Storage.upsert(index.storage, key(), [ref], &(&1 ++ [ref]))
 
     Index.storage(index, storage)
   end
 
   @impl Index.Attr
-  def delete(index, %{ref: ref}) do
+  def delete(index, %{ref: ref}, _opts \\ []) do
     storage = Storage.upsert(index.storage, key(), ref, &(&1 -- [ref]))
 
     storage =
