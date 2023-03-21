@@ -164,6 +164,7 @@ defmodule Haystack.Storage.ETS do
 
   @impl true
   def handle_continue(:ok, %{load: nil} = storage), do: {:noreply, storage}
+
   def handle_continue(:ok, storage) do
     data = storage.load.()
 
