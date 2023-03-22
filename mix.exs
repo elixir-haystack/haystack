@@ -1,17 +1,23 @@
 defmodule Haystack.MixProject do
   use Mix.Project
 
+  @version "0.1.0"
+  @url "https://github.com/elixir-haystack/haystack"
+
   def project do
     [
       app: :haystack,
-      version: "0.1.0",
+      name: "Haystack",
+      version: @version,
       elixir: "~> 1.14",
       elixirc_paths: elixirc_paths(Mix.env()),
       start_permanent: Mix.env() == :prod,
       deps: deps(),
+      docs: docs(),
       test_coverage: [tool: ExCoveralls],
       dialyzer: dialyzer(),
-      name: "Haystack",
+      description: description(),
+      package: package(),
       source_url: "https://github.com/elixir-haystack/haystack",
       homepage_url: "https://github.com/elixir-haystack/haystack",
       preferred_cli_env: [
@@ -51,6 +57,26 @@ defmodule Haystack.MixProject do
     [
       plt_core_path: "priv/plts",
       plt_file: {:no_warn, "priv/plts/dialyzer.plt"}
+    ]
+  end
+
+  defp description() do
+    "Simple, extendable full-text search engine written in Elixir"
+  end
+
+  defp docs do
+    [
+      main: "Haystack",
+      source_ref: "v#{@version}",
+      source_url: @url
+    ]
+  end
+
+  defp package() do
+    [
+      licenses: ["MIT"],
+      maintainers: ["Philip Brown"],
+      links: %{"GitHub" => @url}
     ]
   end
 end
