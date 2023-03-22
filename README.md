@@ -20,7 +20,7 @@ end
 
 The entry point to Haystack is the `Haystack` module. This module is responsible for managing the various indexes you have as part of the project as well as any future configuration or high level concerns.
 
-These conserns are encapsulated in the `%Haystack{}` struct:
+These concerns are encapsulated in the `%Haystack{}` struct:
 
 ```elixir
 haystack = Haystack.new()
@@ -76,7 +76,7 @@ Haystack.index(haystack, :animals, fn index ->
 end)
 ```
 
-The ETS storage implementation is provided as one of the default implementations that ships with Haystack out of the box. If you would like to extend Haystack with your own storage implementation, it's very easy to do so. We'll look at doing that later in this blog post.
+The ETS storage implementation is provided as one of the default implementations that ships with Haystack out of the box. If you would like to extend Haystack with your own storage implementation, it's very easy to do so.
 
 Finally, the most important part of a library that provides full-text search is the ability to query the indexes. Here is the most basic version of applying queries:
 
@@ -84,4 +84,4 @@ Finally, the most important part of a library that provides full-text search is 
 Haystack.index(haystack, :animals, &Index.search(&1, "Red Panda"))
 ```
 
-This would search the `:animals` index for the phrase `"Red Panda"`. Haystack also offers a powerful way to build and run search queries, which we'll look at later in this blog post.
+This would search the `:animals` index for the phrase `"Red Panda"`. Haystack also offers a powerful way to build and run search queries.
