@@ -34,7 +34,7 @@ Haystack.index(haystack, :animals, fn index ->
 end)
 ```
 
-Once you have an `index`, the first thing you need to do is apply specify the fields of the index:
+Once you have an `index`, the first thing you need to do is specify the fields of the index:
 
 ```elixir
 alias Haystack.Index
